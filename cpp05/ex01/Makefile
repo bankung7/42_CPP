@@ -1,4 +1,4 @@
-NAME = maggot
+NAME = form
 
 CC = c++
 
@@ -6,9 +6,9 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 RM = rm -rf
 
-INCS = 
+INCS = Bureaucrat.hpp Form.hpp
 
-SRCS = main.cpp 
+SRCS = main.cpp Bureaucrat.cpp Form.cpp
 
 OBJS_DIR = objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
