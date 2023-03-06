@@ -8,19 +8,16 @@ Form::Form(const std::string& name, int signGrade, int executeGrade): _name(name
         throw GradeTooLowException();
 }
 
-// Form::Form(const Form& c)
-// {
-//     *this = c;
-// }
+Form::Form(const Form& c): _name(c._name), _isSign(c._isSign), _signGrade(c._signGrade), _executeGrade(c._executeGrade)
+{
+}
 
-// Form& Form::operator=(const Form& c)
-// {
-//     if (this != &c)
-//     {
-
-//     }
-//     return (*this);
-// }
+Form& Form::operator=(const Form& c)
+{
+    if (this != &c)
+        this->_isSign = c._isSign;
+    return (*this);
+}
 
 Form::~Form(void)
 {

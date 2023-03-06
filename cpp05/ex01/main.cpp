@@ -17,6 +17,7 @@ int main(void)
     Bureaucrat b("B", 100);
     Form fb("Form B", 50, 30);
     Form fc("Form C", 110, 90);
+    // Form fc(fb);
 
     std::cout << b << std::endl << std::endl;
     std::cout << fb << std::endl << std::endl;
@@ -33,6 +34,8 @@ int main(void)
     {
         std::cerr << e.what() << std::endl;
     }
+
+    // fc = fb;
     
     std::cout << std::endl;
     std::cout << fb << std::endl;
