@@ -70,7 +70,7 @@ void AForm::beSign(const Bureaucrat& b)
 // overload <<
 std::ostream& operator<<(std::ostream& stream, const AForm& f)
 {
-    stream << "AForm Name      : " << f.getName() << std::endl;
+    stream << "Form Name      : " << f.getName() << std::endl;
     stream << "Sign status    : " << f.getStatus() << std::endl;
     stream << "Required Grade : " << f.getSignGrade() << std::endl;
     stream << "Execute Grade  : " << f.getExecuteGrade();
