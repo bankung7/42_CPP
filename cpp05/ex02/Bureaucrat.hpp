@@ -37,7 +37,7 @@ public:
 
     void signForm(AForm& f);
 
-    void executeForm(Form const & form);
+    void executeForm(AForm const & form);
 
 };
 

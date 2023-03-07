@@ -6,9 +6,11 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 RM = rm -rf
 
-INCS = Bureaucrat.hpp AForm.hpp ShrubberyCreationForm.hpp
+INCS = Bureaucrat.hpp AForm.hpp ShrubberyCreationForm.hpp \
+	RobotomyRequestForm.hpp PresidentialPardonForm.hpp
 
-SRCS = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp
+SRCS = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp \
+	RobotomyRequestForm.cpp PresidentialPardonForm.cpp
 
 OBJS_DIR = objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))

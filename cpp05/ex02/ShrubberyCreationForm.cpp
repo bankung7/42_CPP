@@ -20,7 +20,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm(void)
 
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
-    if (executor.getGrade() > this->getSignGrade())
+    if (executor.getGrade() > this->getExecuteGrade())
         throw Bureaucrat::GradeTooLowException();
     if (!this->getStatus())
         throw AForm::AFormNotSigned();
@@ -37,14 +37,14 @@ void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
         for (int j = 0; j < h - i; j++)
             outfile << " ";
         for (int k = 0; k < i * 2; k++)
-            outfile << "$";
+            outfile << "#";
         outfile << std::endl;
     }
     for (int i = 0; i < h / 2; i++)
     {
-        for (int j = 0; j < h - i; j++)
+        for (int j = 0; j < h - 1; j++)
             outfile << " ";
-        outfile << "##" << std::endl;
+        outfile << "###" << std::endl;
     }
     for (int i = 0; i < h * 2; i++)
         outfile << "/";
