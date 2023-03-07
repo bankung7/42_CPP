@@ -1,5 +1,5 @@
-#ifndef AAFORM_HPP
-#define AAFORM_HPP
+#ifndef AFORM_HPP
+#define AFORM_HPP
 
 #include <iostream>
 #include "Bureaucrat.hpp"
@@ -19,7 +19,7 @@ public:
     AForm(const std::string& name, int signGrade, int executeGrade);
     AForm(const AForm& c);
     AForm& operator=(const AForm& c);
-    virtual ~AForm(void);
+    virtual ~AForm(void); // make it virtual
 
     class GradeTooHighException: public std::exception
     {
@@ -31,7 +31,12 @@ public:
         const char* what() const throw();
     };
 
-    class FormNotSigned: public std::exception
+    class AFormSigned: public std::exception
+    {
+        const char* what() const throw();
+    };
+
+    class AFormNotSigned: public std::exception
     {
         const char* what() const throw();
     };
@@ -52,10 +57,8 @@ std::ostream& operator<<(std::ostream& stream, const AForm& f);
 
 #endif
 
-// make the form to be abstract
-// rename to AForm
-// all attributes are still private and in base class
-// add the execute(Bureaucrat const & executor) const member function to
-// the base form and implement a function to execute the form’s action of the concrete
-// classes. You have to check that the form is signed and that the grade of the bureaucrat
+// change the name to AForm
+// All attribute remain private and in the base class
+// add the execute(Bureaucrat const & executor) const member function to the base form
+// You have to check that the form is signed and that the grade of the bureaucrat
 // attempting to execute the form is high enough. Otherwise, throw an appropriate exception.

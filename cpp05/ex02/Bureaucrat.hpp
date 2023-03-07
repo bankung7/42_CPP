@@ -37,7 +37,7 @@ public:
 
     void signForm(AForm& f);
 
-    void executeForm(AForm const & form);
+    void executeForm(Form const & form);
 
 };
 
@@ -45,6 +45,4 @@ std::ostream& operator<<(std::ostream& stream, const Bureaucrat& b);
 
 #endif
 
-// signForm() in Bureaucrat class, if the form got sign =>
-// print something like <bureaucrat> signed <form>
-// or <bureaucrat> couldn’t sign <form> because <reason>
+// add executeForm(Form const & form)

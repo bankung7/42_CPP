@@ -26,12 +26,17 @@ Form::~Form(void)
 // Exception
 const char* Form::GradeTooHighException::what(void) const throw()
 {
-    return ("error : form : grade too high");
+    return ("grade too high");
 }
 
 const char* Form::GradeTooLowException::what(void) const throw()
 {
-    return ("error : form : grade too low");
+    return ("grade too low");
+}
+
+const char* Form::FormSigned::what(void) const throw()
+{
+    return ("form was signed by other");
 }
 
 // getter attribute
@@ -57,6 +62,8 @@ int Form::getExecuteGrade(void) const
 
 void Form::beSign(const Bureaucrat& b)
 {
+    if (this->getStatus())
+        throw Form::FormSigned();
     if (b.getGrade() > this->getSignGrade())
         throw Form::GradeTooLowException();
     this->_isSign = 1;

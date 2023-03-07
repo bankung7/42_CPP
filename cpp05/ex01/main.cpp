@@ -29,6 +29,7 @@ int main(void)
     {
         b.signForm(fb);
         b.signForm(fc);
+        b.signForm(fc);
     }
     catch(const std::exception& e)
     {

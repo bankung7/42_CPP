@@ -26,17 +26,22 @@ AForm::~AForm(void)
 // Exception
 const char* AForm::GradeTooHighException::what(void) const throw()
 {
-    return ("error : Aform : grade too high");
+    return ("grade too high");
 }
 
 const char* AForm::GradeTooLowException::what(void) const throw()
 {
-    return ("error : Aform : grade too low");
+    return ("grade too low");
 }
 
-const char* AForm::FormNotSigned::what(void) const throw()
+const char* AForm::AFormSigned::what(void) const throw()
 {
-    return ("error : Aform : form is still not signed");
+    return ("form was signed by other");
+}
+
+const char* AForm::AFormNotSigned::what(void) const throw()
+{
+    return ("form is still not signed");
 }
 
 // getter attribute
@@ -64,13 +69,15 @@ void AForm::beSign(const Bureaucrat& b)
 {
     if (b.getGrade() > this->getSignGrade())
         throw AForm::GradeTooLowException();
+    if (this->getStatus())
+        throw AForm::AFormSigned();
     this->_isSign = 1;
 }
 
 // overload <<
 std::ostream& operator<<(std::ostream& stream, const AForm& f)
 {
-    stream << "Form Name      : " << f.getName() << std::endl;
+    stream << "AForm Name      : " << f.getName() << std::endl;
     stream << "Sign status    : " << f.getStatus() << std::endl;
     stream << "Required Grade : " << f.getSignGrade() << std::endl;
     stream << "Execute Grade  : " << f.getExecuteGrade();

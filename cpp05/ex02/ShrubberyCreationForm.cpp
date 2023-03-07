@@ -4,13 +4,13 @@ ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target): AForm("
 {
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& c): AForm(c.getName(), c.getSignGrade(), c.getExecuteGrade()), _target(c._target)
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& c): AForm("ShrubberyCreationForm", 145, 137), _target(c._target)
 {
 }
 
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& c)
 {
-    this->_target = c._target;
+    (void)c;
     return (*this);
 }
 
@@ -18,40 +18,37 @@ ShrubberyCreationForm::~ShrubberyCreationForm(void)
 {
 }
 
-
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
+    if (executor.getGrade() > this->getSignGrade())
+        throw Bureaucrat::GradeTooLowException();
     if (!this->getStatus())
-        throw ShrubberyCreationForm::FormNotSigned();
-    if (executor.getGrade() > this->getExecuteGrade())
-        throw AForm::GradeTooLowException();
+        throw AForm::AFormNotSigned();
     
     std::ofstream outfile;
-    outfile.open(this->_target + "__shrubbery");
+
+    outfile.open(std::string(this->_target + "_shrubbery").c_str());
     if (!outfile.is_open())
         return ;
- 
-    // draw ascii tree here //
-    int h = 10;
+
+    int h = 14;
     for (int i = 0; i < h; i++)
     {
         for (int j = 0; j < h - i; j++)
             outfile << " ";
         for (int k = 0; k < i * 2; k++)
-        {
-            if (k % 2 == 0)
-                outfile << "#";
-            else
-                outfile << "*";
-        }
+            outfile << "$";
         outfile << std::endl;
     }
-    for (int i = 0; i < h / 3; i++)
+    for (int i = 0; i < h / 2; i++)
     {
-        for (int j = 0; j < h - 1; j++)
+        for (int j = 0; j < h - i; j++)
             outfile << " ";
         outfile << "##" << std::endl;
     }
+    for (int i = 0; i < h * 2; i++)
+        outfile << "/";
+    outfile << std::endl;
 
     outfile.close();
 }
