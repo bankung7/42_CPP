@@ -44,6 +44,11 @@ const char* AForm::AFormNotSigned::what(void) const throw()
     return ("form is still not signed");
 }
 
+const char* AForm::InvalidForm::what(void) const throw()
+{
+    return ("Invalid Form");
+}
+
 // getter attribute
 const std::string AForm::getName(void) const
 {

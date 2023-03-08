@@ -41,6 +41,11 @@ public:
         const char* what() const throw();
     };
 
+    class InvalidForm: public std::exception
+    {
+        const char* what() const throw();
+    };
+
     // getter for all member function
     const std::string getName(void) const;
     bool getStatus(void) const;
