@@ -9,7 +9,6 @@ int main(void)
 {
     {
         Bureaucrat a("A", 40);
-        Bureaucrat b("B", 1);
 
         Intern someRandomIntern;
         AForm* scf;
@@ -31,7 +30,10 @@ int main(void)
             a.signForm(*scf);
             a.signForm(*rrf);
             a.signForm(*ppf);
-            b.signForm(*ppf);
+            std::cout << "Upgrade A" << std::endl;
+            for (int i = 0; i < 25; i++)
+                a.gradeIncrement();
+            a.signForm(*ppf);
 
             std::cout << std::endl;
 
@@ -39,7 +41,7 @@ int main(void)
             std::cout << std::endl;
             a.executeForm(*rrf);
             std::cout << std::endl;
-            b.executeForm(*ppf);
+            a.executeForm(*ppf);
 
             delete scf;
             delete rrf;
@@ -48,7 +50,7 @@ int main(void)
             std::cout << std::endl;
 
             ppf = someRandomIntern.makeForm("resignation", "golf");
-            
+            a.signForm(*ppf);
         }
         catch(const std::exception& e)
         {

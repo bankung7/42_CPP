@@ -2,7 +2,6 @@
 
 Intern::Intern(void)
 {
-
 }
 
 Intern::Intern(const Intern& c)
@@ -44,8 +43,7 @@ AForm* Intern::makeForm(const std::string& name, const std::string& target)
             }
         }
     }
-    std::cout << "Intern don't know this " << name << " form" << std::endl;
+    throw AForm::InvalidForm();
+    // std::cout << "Intern don't know this " << name << " form" << std::endl;
     return (NULL);
-
-
 }
