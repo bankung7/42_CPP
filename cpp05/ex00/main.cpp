@@ -36,8 +36,7 @@ int main(void)
     
     std::cout << std::endl;
 
-    Bureaucrat b("B", 150);
-    b = a;
+    Bureaucrat b("B", 1);
     std::cout << b << std::endl;
     try
     {

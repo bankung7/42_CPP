@@ -25,29 +25,27 @@ Intern::~Intern(void)
 AForm* Intern::makeForm(const std::string& name, const std::string& target)
 {
     std::string form[3] = {"shrubbery creation", "robotomy request", "presidential pardon"};
-    AForm* ptr = 0;
 
     for (int i = 0; i < 3; i++)
     {
         if (name == form[i])
         {
+            std::cout << "Intern creates " << form[i] << " form" << std::endl;
             switch (i)
             {
             case 0:
-                ptr = new ShrubberyCreationForm(target);
-                break;
+                return (new ShrubberyCreationForm(target));
             case 1:
-                ptr = new RobotomyRequestForm(target);
-                break;
+                return (new RobotomyRequestForm(target));
             case 2:
-                ptr = new PresidentialPardonForm(target);
+                return (new PresidentialPardonForm(target));
+            default:
                 break;
             }
-            std::cout << "Intern creates " << form[i] << " form" << std::endl;
-            return (ptr);
         }
     }
-    std::cout << "Intern don't know " << name << " form" << std::endl;
-    // throw AForm::InvalidForm();
-    return (ptr);
+    std::cout << "Intern don't know this " << name << " form" << std::endl;
+    return (NULL);
+
+
 }

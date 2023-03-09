@@ -26,6 +26,7 @@ int main(void)
         a.signForm(fs);
         b.signForm(fs);
         a.executeForm(fs);
+        b.executeForm(fs);
         std::cout << std::endl;
         c.signForm(fr);
         c.executeForm(fr);

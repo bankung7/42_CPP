@@ -9,6 +9,7 @@ int main(void)
 {
     {
         Bureaucrat a("A", 40);
+        Bureaucrat b("B", 1);
 
         Intern someRandomIntern;
         AForm* scf;
@@ -17,9 +18,11 @@ int main(void)
 
         try
         {
-            scf = someRandomIntern.makeForm("shrubbery creation", "Bender");
+            scf = someRandomIntern.makeForm("shrubbery creation", "Home");
             rrf = someRandomIntern.makeForm("robotomy request", "Colder");
             ppf = someRandomIntern.makeForm("presidential pardon", "Denver");
+
+            std::cout << std::endl;
 
             std::cout << *scf << std::endl << std::endl;
             std::cout << *rrf << std::endl << std::endl;
@@ -28,16 +31,21 @@ int main(void)
             a.signForm(*scf);
             a.signForm(*rrf);
             a.signForm(*ppf);
+            b.signForm(*ppf);
 
             std::cout << std::endl;
 
             a.executeForm(*scf);
+            std::cout << std::endl;
             a.executeForm(*rrf);
-            a.executeForm(*ppf);
+            std::cout << std::endl;
+            b.executeForm(*ppf);
 
             delete scf;
             delete rrf;
             delete ppf;
+
+            std::cout << std::endl;
 
             ppf = someRandomIntern.makeForm("resignation", "golf");
             

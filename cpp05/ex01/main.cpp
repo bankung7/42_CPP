@@ -6,6 +6,9 @@ int main(void)
     try
     {
         Form a("Form A", 0, 40);
+        Form b("Form B", 10, 0);
+        Form c("Form C", 151, 12);
+        Form d("Form D", 12, 151);
     }
     catch(const std::exception& e)
     {

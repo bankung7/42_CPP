@@ -36,5 +36,4 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const
     else
         std::cout << "The " << this->_target << " has been failed" << std::endl;
 
-
 }
