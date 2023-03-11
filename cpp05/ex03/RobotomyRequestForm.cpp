@@ -20,11 +20,7 @@ RobotomyRequestForm::~RobotomyRequestForm(void)
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
-
-    if (executor.getGrade() > this->getExecuteGrade())
-        throw Bureaucrat::GradeTooLowException();
-    if (!this->getStatus())
-        throw AForm::AFormNotSigned();
+    this->checkExecuteRequirement(executor);
 
     std::cout << "tskkk stskk skk tskk tagg tukk" << std::endl;
 
@@ -35,5 +31,4 @@ void RobotomyRequestForm::execute(Bureaucrat const & executor) const
         std::cout << "The " << this->_target << " has been robotomized successfully" << std::endl;
     else
         std::cout << "The " << this->_target << " has been failed" << std::endl;
-
 }

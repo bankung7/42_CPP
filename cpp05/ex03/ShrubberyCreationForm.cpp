@@ -20,11 +20,8 @@ ShrubberyCreationForm::~ShrubberyCreationForm(void)
 
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
-    if (executor.getGrade() > this->getExecuteGrade())
-        throw Bureaucrat::GradeTooLowException();
-    if (!this->getStatus())
-        throw AForm::AFormNotSigned();
-    
+    this->checkExecuteRequirement(executor);
+
     std::ofstream outfile;
 
     outfile.open(std::string(this->_target + "_shrubbery").c_str());

@@ -19,7 +19,7 @@ public:
     AForm(const std::string& name, int signGrade, int executeGrade);
     AForm(const AForm& c);
     AForm& operator=(const AForm& c);
-    virtual ~AForm(void); // make it virtual
+    virtual ~AForm(void);
 
     class GradeTooHighException: public std::exception
     {
@@ -54,6 +54,7 @@ public:
 
     void beSign(const Bureaucrat& b);
 
+    void checkExecuteRequirement(const Bureaucrat& b) const;
     virtual void execute(Bureaucrat const & executor) const = 0;
 
 };

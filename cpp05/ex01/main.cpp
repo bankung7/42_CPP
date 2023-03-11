@@ -39,8 +39,6 @@ int main(void)
         std::cerr << e.what() << std::endl;
     }
 
-    // fc = fb;
-    
     std::cout << std::endl;
     std::cout << fb << std::endl;
     std::cout << std::endl;

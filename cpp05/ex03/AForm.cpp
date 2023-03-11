@@ -3,9 +3,9 @@
 AForm::AForm(const std::string& name, int signGrade, int executeGrade): _name(name), _isSign(0), _signGrade(signGrade), _executeGrade(executeGrade)
 {
     if (signGrade <= 0 || executeGrade <= 0)
-        throw GradeTooHighException();
+        throw AForm::GradeTooHighException();
     if (signGrade > 150 || executeGrade > 150)
-        throw GradeTooLowException();
+        throw AForm::GradeTooLowException();
 }
 
 AForm::AForm(const AForm& c): _name(c._name), _isSign(c._isSign), _signGrade(c._signGrade), _executeGrade(c._executeGrade)
@@ -77,6 +77,14 @@ void AForm::beSign(const Bureaucrat& b)
     if (this->getStatus())
         throw AForm::AFormSigned();
     this->_isSign = 1;
+}
+
+void AForm::checkExecuteRequirement(const Bureaucrat& b) const
+{
+    if (b.getGrade() > this->getExecuteGrade())
+        throw Bureaucrat::GradeTooLowException();
+    if (!this->getStatus())
+        throw AForm::AFormNotSigned();
 }
 
 // overload <<

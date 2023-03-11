@@ -11,9 +11,7 @@ Intern::Intern(const Intern& c)
 
 Intern& Intern::operator=(const Intern& c)
 {
-    if (this != &c)
-    {
-    }
+    (void)c;
     return (*this);
 }
 
@@ -44,6 +42,5 @@ AForm* Intern::makeForm(const std::string& name, const std::string& target)
         }
     }
     throw AForm::InvalidForm();
-    // std::cout << "Intern don't know this " << name << " form" << std::endl;
     return (NULL);
 }
