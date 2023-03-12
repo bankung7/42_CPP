@@ -2,13 +2,15 @@
 #define SCALARCONVERTER_HPP
 
 #include <iostream>
+#include <limits>
+#include <cfloat>
+#include <iomanip>
 
 class ScalarConverter
 {
 
 private:
     std::string _input;
-    bool _isNumber;
     double _value;
 
 public:
@@ -22,10 +24,22 @@ public:
     bool checkNumber(void);
     void checkChar(void);
 
-    void caseNumber(void);
+    bool caseChar(void);
+    bool caseInt(void);
+    bool caseFloat(void);
+    bool caseDouble(void);
+    bool caseSpecial(void);
+
+    // polymorphic for print case
+    void cprint(const char& c);
+    void cprint(const int& i);
+    void cprint(const float& f);
+    void cprint(const double& d);
 };
 
 #endif
+
+// the problem is "the static class" ?, how to deal with this
 
 // detect the type of the literal passed as parameter
 // convert it from string to its actual type
