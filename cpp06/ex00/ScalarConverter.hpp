@@ -2,16 +2,21 @@
 #define SCALARCONVERTER_HPP
 
 #include <iostream>
-#include <limits>
+#include <numeric>
 #include <cfloat>
 #include <iomanip>
+#include <sstream>
+
 
 class ScalarConverter
 {
 
 private:
     std::string _input;
-    double _value;
+    char _char;
+    int _int;
+    float _float;
+    double _double;
 
 public:
     ScalarConverter(void);
