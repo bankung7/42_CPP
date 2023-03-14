@@ -6,6 +6,8 @@
 #include <cfloat>
 #include <iomanip>
 #include <sstream>
+#include <string>
+#include <limits>
 
 
 class ScalarConverter
@@ -17,6 +19,8 @@ private:
     int _int;
     float _float;
     double _double;
+    // bool _isNan;
+    bool _isInf;
 
 public:
     ScalarConverter(void);
@@ -26,14 +30,11 @@ public:
 
     void convert(const std::string& input);
 
-    bool checkNumber(void);
-    void checkChar(void);
-
-    bool caseChar(void);
-    bool caseInt(void);
-    bool caseFloat(void);
-    bool caseDouble(void);
-    bool caseSpecial(void);
+    void caseChar(void);
+    void caseInt(void);
+    void caseFloat(void);
+    void caseDouble(void);
+    bool checkSpecial(void);
 
     // polymorphic for print case
     void cprint(const char& c);

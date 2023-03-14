@@ -1,7 +1,7 @@
 #include "ScalarConverter.hpp"
 #include <iomanip>
 
-ScalarConverter::ScalarConverter(void)
+ScalarConverter::ScalarConverter(void): _char(0), _int(0), _float(0), _double(0), _isInf(0)
 {
 }
 
@@ -23,188 +23,145 @@ ScalarConverter::~ScalarConverter(void)
 void ScalarConverter::convert(const std::string& input)
 {
     this->_input = input;
-    // std::stringstream ss(input);
-    // ss >> this->_double;
-
-    // std::cout << "strstream : " << ss.str() << std::endl;
-    // std::cout << "value : " << this->_double << std::endl;
-    // std::cout << "fail : " << ss.fail() << std::endl;
-
-    if (caseDouble())
-        return ;
-    if (caseFloat())
-        return ;
-    if (caseInt())
-        return ;
-    if (caseChar())
-        return ;
-}
-
-bool ScalarConverter::caseChar(void)
-{
-    // if (this->_input.length() != 1 || std::isdigit(this->_input[0]))
-    //     return (false);
     
-    // std::cout << "char case => " << this->_input[0] << std::endl;
-    return (true);
+    // test double
+    std::stringstream dss(this->_input);
+    dss >> this->_double;
+
+    // special case
+    checkSpecial();
+
+    if (!dss.fail() && !dss.good() && this->_input.find('.') != std::string::npos)
+        return (caseDouble());
+    
+    // test float
+    std::string str(input);
+    str.pop_back();
+    std::stringstream fss(str);
+    fss >> this->_double;
+
+    if (!fss.fail() && !fss.good() && this->_input.back() == 'f' && this->_input.find('.') != std::string::npos)
+        return (caseFloat());
+
+    // test int
+    if (!dss.fail() && !dss.good())
+        return (caseInt());
+    
+    // test char
+    if (this->_input.length() == 1)
+        return (caseChar());
+
+    std::cout << "No case" << std::endl;
+    std::cout << "char : impossible" << std::endl;
+    std::cout << "int : impossible" << std::endl;
+    std::cout << "float : impossible" << std::endl;
+    std::cout << "double : impossible" << std::endl;
+    return ;
 }
 
-bool ScalarConverter::caseInt(void)
+bool ScalarConverter::checkSpecial(void)
 {
- 
-    return (true);
+    std::cout << (this->_double == std::numeric_limits<double>::infinity()) << std::endl;
+    std::cout << (this->_double == -std::numeric_limits<double>::infinity()) << std::endl;
+    std::cout << "value : " << this->_double << std::endl;
+
+    if (this->_double == std::numeric_limits<double>::infinity() ||
+        this->_double == -std::numeric_limits<double>::infinity())
+        return (this->_isInf = 1);
+
+    return (false);
 }
 
-bool ScalarConverter::caseFloat(void)
+void ScalarConverter::caseChar(void)
 {
+    std::cout << "case char" << std::endl;
 
-    return (true);
+    this->_char = this->_input[0];
+
+    cprint(this->_char); std::cout << std::endl;
+    std::cout << "int : " << static_cast<int>(this->_char) << std::endl;
+    std::cout << "float : " << static_cast<float>(this->_char) << ".0f" << std::endl;
+    std::cout << "double : " << static_cast<double>(this->_char) << ".0" << std::endl;
 }
 
-bool ScalarConverter::caseDouble(void)
+void ScalarConverter::caseInt(void)
 {
+    std::cout << "case int" << std::endl;
+
     std::stringstream ss(this->_input);
-    ss >> this->_double;
+    ss >> this->_int;
 
-    std::cout << this->_double << std::endl;
-
-    std::cout << "good : " << ss.good() << std::endl;
-    std::cout << "fail : " << ss.fail() << std::endl;
-
-    if (ss.fail() || ss.good())
-    {
-        std::cout << "not double" << std::endl;
-        return (false);
-    }
-
-    std::cout << "double case" << std::endl;
-    return (true);
+    cprint(static_cast<char>(this->_int)); std::cout << std::endl;
+    cprint(this->_int); std::cout << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
+    cprint(static_cast<float>(this->_int)); std::cout << std::endl;
+    cprint(static_cast<double>(this->_int)); std::cout << std::endl;
 }
 
-// bool ScalarConverter::checkNumber(void)
-// {
-//     int i = 0;
-//     if (this->_input[i] == '+' || this->_input[i] == '-')
-//         i++;
-//     for (; i < (int)this->_input.length(); i++)
-//         if (!std::isdigit(this->_input[i]))
-//             break;
-//     if (this->_input[i] == 0)
-//         return (caseInt());
-//     if (this->_input.length() == 1)
-//         return (caseChar());
-//     if (this->_input[i++] != '.')
-//         return (false);
-//     for (; i < (int)this->_input[i]; i++)
-//         if (!std::isdigit(this->_input[i]))
-//             break;
-//     if (this->_input[i] == 0)
-//         return (caseDouble());
-//     if (this->_input[i] == 'f' && this->_input[i + 1] == 0)
-//         return (caseFloat());
-//     return (false);
-// }
+void ScalarConverter::caseFloat(void)
+{
+    std::cout << "float case" << std::endl;
 
-// void ScalarConverter::convert(const std::string& input)
-// {
-//     std::stringstream sstream(input);
-//     sstream >> this->_value;
+    std::string str(this->_input);
+    str.pop_back();
+    std::stringstream ss(str);
+    ss >> this->_float;
 
-//     std::cout << "value : " << this->_input << std::endl;
+    cprint(static_cast<char>(this->_float)); std::cout << std::endl;
+    cprint(static_cast<int>(this->_float)); std::cout << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
+    cprint(this->_float); std::cout << std::endl;
+    cprint(static_cast<double>(this->_float)); std::cout << std::endl;
+}
 
-// }
+void ScalarConverter::caseDouble(void)
+{
+    std::cout << "double case" << std::endl;
 
-// bool ScalarConverter::caseChar(void)
-// {
-//     std::cout << "===== Char case =====" << std::endl;
-//     char c = static_cast<char>(this->_input[0]);
-//     this->_value = this->_input[0];
-//     std::cout << "char : "; cprint(c);
-//     std::cout << "int : "; cprint(static_cast<int>(c));
-//     std::cout << "float : "; cprint(static_cast<float>(c));
-//     std::cout << "double : "; cprint(static_cast<double>(c));
-//     return (true);
-// }
+    cprint(static_cast<char>(this->_double)); std::cout << std::endl;
+    cprint(static_cast<int>(this->_double)); std::cout << std::endl;
+    std::cout << std::fixed << std::setprecision(1);
+    cprint(static_cast<float>(this->_double)); std::cout << std::endl;
+    cprint(this->_double); std::cout << std::endl;
+}
 
-// bool ScalarConverter::caseInt(void)
-// {
-//     // if it overflow or underflow from int when conversion.
-//     // it should cast as over, or cast from the input.
-//     std::cout << "===== Int case =====" << std::endl;
-//     int i = std::atoi(this->_input.c_str());
-//     std::cout << "char : "; cprint(static_cast<char>(this->_value));
-//     std::cout << "int : "; cprint(i);
-//     std::cout << "float : "; cprint(static_cast<float>(this->_value));
-//     std::cout << "double : "; cprint(static_cast<double>(this->_value));
+void ScalarConverter::cprint(const char& c)
+{
+    std::cout << "char : ";
+    // if (this->_double < CHAR_MIN || this->_double > CHAR_MAX)
+    if (this->_double < std::numeric_limits<char>::min()
+        || this->_double > std::numeric_limits<char>::max()
+        || this->_isInf)
+        std::cout << "impossible";
+    else if (std::isprint(c))
+        std::cout << "'" << c << "'";
+    else
+        std::cout << "Non displayable";
+}
 
-//     // std::cout << "char : "; cprint(static_cast<char>(i));
-//     // std::cout << "int : "; cprint(i);
-//     // std::cout << "float : "; cprint(static_cast<float>(i));
-//     // std::cout << "double : "; cprint(static_cast<double>(i));
-//     return (true);
-// }
+void ScalarConverter::cprint(const int& i)
+{
+    std::cout << "int : ";
+    if (this->_double < std::numeric_limits<int>::min()
+        || this->_double > std::numeric_limits<int>::max()
+        || this->_isInf)
+        std::cout << "impossible";
+    else
+        std::cout << i;
+}
 
-// bool ScalarConverter::caseFloat(void)
-// {
-//     // as float is 4 byte, it may loss some precision.
-//     std::cout << "===== Float case =====" << std::endl;
-//     std::cout << "char : "; cprint(static_cast<char>(this->_value));
-//     std::cout << "int : "; cprint(static_cast<int>(this->_value));
-//     std::cout << "float : "; cprint(static_cast<float>(this->_value));
-//     std::cout << "double : "; cprint(static_cast<double>(this->_value));
-//     return (true);
-// }
+void ScalarConverter::cprint(const float& f)
+{
+    std::cout << "float : ";
+    if (this->_double < -std::numeric_limits<float>::max()
+        || this->_double > std::numeric_limits<float>::max())
+        std::cout << "impossible";
+    else
+        std::cout << f << "f";
+}
 
-// bool ScalarConverter::caseDouble(void)
-// {
-//     std::cout << "===== Double case =====" << std::endl;
-//     std::cout << "char : "; cprint(static_cast<char>(this->_value));
-//     std::cout << "int : "; cprint(static_cast<int>(this->_value));
-//     std::cout << "float : "; cprint(static_cast<float>(this->_value));
-//     std::cout << "double : "; cprint(this->_value);
-//     return (true);
-// }
-
-// bool ScalarConverter::caseSpecial(void)
-// {
-//     return (true);
-// }
-
-// // polymorphic for cprint
-// void ScalarConverter::cprint(const char& c)
-// {
-//     if (this->_value < CHAR_MIN || this->_value > CHAR_MAX)
-//         std::cout << "impossible" << std::endl;
-//     else if (std::isprint(c))
-//         std::cout << "'" << c << "'" << std::endl;
-//     else
-//         std::cout << "Non printable" << std::endl;
-// }
-
-// void ScalarConverter::cprint(const int& i)
-// {
-//     if (this->_value < INT_MIN || this->_value > INT_MAX)
-//         std::cout << "impossible" << std::endl;
-//     else
-//         std::cout << i << std::endl;
-// }
-
-// void ScalarConverter::cprint(const float& f)
-// {
-//     if (f == 0)
-//         std::cout << "0.0f" << std::endl;
-//     else if (this->_value < FLT_MIN || this->_value > FLT_MAX)
-//         std::cout << "impossible" << std::endl;
-//     else
-//         std::cout << std::fixed << std::setprecision(1) << f << "f" << std::endl;
-// }
-
-// void ScalarConverter::cprint(const double& d)
-// {
-//     if ((this->_value < 0 && this->_input[0] != '-') || (this->_value > 0 && this->_input[0] == '-'))
-//         std::cout << "impossible" << std::endl;
-//     else if (d == 0)
-//         std::cout << "0.0" << std::endl;
-//     else
-//         std::cout << std::fixed << std::setprecision(1) << d << std::endl;
-// }
+void ScalarConverter::cprint(const double& d)
+{
+    std::cout << "double : ";
+    std::cout << d;
+}
