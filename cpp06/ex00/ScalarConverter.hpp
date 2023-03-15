@@ -20,7 +20,7 @@ private:
     float _float;
     double _double;
     bool _isNan;
-    bool _isInf;
+    int _isInf;
     bool _isString;
 
 public:
