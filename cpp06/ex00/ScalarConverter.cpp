@@ -1,7 +1,7 @@
 #include "ScalarConverter.hpp"
 #include <iomanip>
 
-ScalarConverter::ScalarConverter(void): _char(0), _int(0), _float(0), _double(0), _isInf(0)
+ScalarConverter::ScalarConverter(void): _char(0), _int(0), _float(0), _double(0), _isNan(0), _isInf(0), _isString(0)
 {
 }
 
@@ -31,6 +31,9 @@ void ScalarConverter::convert(const std::string& input)
     // special case
     checkSpecial();
 
+    std::cout << "inf : " << this->_isInf << std::endl;
+    std::cout << "nan : " << this->_isNan << std::endl;
+
     if (!dss.fail() && !dss.good() && this->_input.find('.') != std::string::npos)
         return (caseDouble());
     
@@ -38,7 +41,8 @@ void ScalarConverter::convert(const std::string& input)
     std::string str(input);
     str.pop_back();
     std::stringstream fss(str);
-    fss >> this->_double;
+    double ftest;
+    fss >> ftest;
 
     if (!fss.fail() && !fss.good() && this->_input.back() == 'f' && this->_input.find('.') != std::string::npos)
         return (caseFloat());
@@ -50,24 +54,44 @@ void ScalarConverter::convert(const std::string& input)
     // test char
     if (this->_input.length() == 1)
         return (caseChar());
+    
+    this->_isString = 1;
 
     std::cout << "No case" << std::endl;
-    std::cout << "char : impossible" << std::endl;
-    std::cout << "int : impossible" << std::endl;
-    std::cout << "float : impossible" << std::endl;
-    std::cout << "double : impossible" << std::endl;
+    // std::cout << "char : impossible" << std::endl;
+    // std::cout << "int : impossible" << std::endl;
+    // std::cout << "float : impossible" << std::endl;
+    // std::cout << "double : impossible" << std::endl;
+    cprint(static_cast<char>(this->_double)); std::cout << std::endl;
+    cprint(static_cast<int>(this->_double)); std::cout << std::endl;
+    cprint(static_cast<float>(this->_double)); std::cout << std::endl;
+    cprint(static_cast<double>(this->_double)); std::cout << std::endl;
     return ;
 }
 
 bool ScalarConverter::checkSpecial(void)
 {
-    std::cout << (this->_double == std::numeric_limits<double>::infinity()) << std::endl;
-    std::cout << (this->_double == -std::numeric_limits<double>::infinity()) << std::endl;
-    std::cout << "value : " << this->_double << std::endl;
-
     if (this->_double == std::numeric_limits<double>::infinity() ||
         this->_double == -std::numeric_limits<double>::infinity())
         return (this->_isInf = 1);
+    
+    if (this->_input.back() == 'f')
+    {
+        std::cout << "may be nanf" << std::endl;
+        std::string str(this->_input);
+        str.pop_back();
+        std::stringstream ss(str);
+        float t;
+        ss >> t;
+        if (!ss.fail() && !ss.good() && (t != t))
+        {
+            std::cout << "yes nanf" << std::endl;
+            return (this->_isNan = 1);
+        }
+    }
+
+    if (this->_double != this->_double)
+        return (this->_isNan = 1);
 
     return (false);
 }
@@ -131,7 +155,7 @@ void ScalarConverter::cprint(const char& c)
     // if (this->_double < CHAR_MIN || this->_double > CHAR_MAX)
     if (this->_double < std::numeric_limits<char>::min()
         || this->_double > std::numeric_limits<char>::max()
-        || this->_isInf)
+        || this->_isInf || this->_isNan || this->_isString)
         std::cout << "impossible";
     else if (std::isprint(c))
         std::cout << "'" << c << "'";
@@ -144,7 +168,7 @@ void ScalarConverter::cprint(const int& i)
     std::cout << "int : ";
     if (this->_double < std::numeric_limits<int>::min()
         || this->_double > std::numeric_limits<int>::max()
-        || this->_isInf)
+        || this->_isInf || this->_isNan || this->_isString)
         std::cout << "impossible";
     else
         std::cout << i;
@@ -153,8 +177,13 @@ void ScalarConverter::cprint(const int& i)
 void ScalarConverter::cprint(const float& f)
 {
     std::cout << "float : ";
-    if (this->_double < -std::numeric_limits<float>::max()
-        || this->_double > std::numeric_limits<float>::max())
+    if (this->_isInf)
+        std::cout << this->_input;
+    else if (this->_isNan)
+        std::cout << std::numeric_limits<float>::quiet_NaN() << "f";
+    else if (this->_double < -std::numeric_limits<float>::max()
+        || this->_double > std::numeric_limits<float>::max()
+        || this->_isString)
         std::cout << "impossible";
     else
         std::cout << f << "f";
@@ -163,5 +192,10 @@ void ScalarConverter::cprint(const float& f)
 void ScalarConverter::cprint(const double& d)
 {
     std::cout << "double : ";
-    std::cout << d;
+    if (this->_isNan)
+        std::cout << std::numeric_limits<double>::quiet_NaN();
+    else if (this->_isString)
+        std::cout << "impossible";
+    else
+        std::cout << d;
 }

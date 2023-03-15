@@ -19,8 +19,9 @@ private:
     int _int;
     float _float;
     double _double;
-    // bool _isNan;
+    bool _isNan;
     bool _isInf;
+    bool _isString;
 
 public:
     ScalarConverter(void);

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ScalarConverter.hpp"
 #include <sstream>
+#include <limits>
 
 int main(int argc, char** argv)
 {
