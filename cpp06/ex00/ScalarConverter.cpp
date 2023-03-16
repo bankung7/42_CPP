@@ -12,7 +12,17 @@ ScalarConverter::ScalarConverter(const ScalarConverter& c)
 
 ScalarConverter& ScalarConverter::operator=(const ScalarConverter& c)
 {
-    (void)c;
+    if (this != &c)
+    {
+        this->_input = c._input;
+        this->_char = c._char;
+        this->_int = c._int;
+        this->_float = c._float;
+        this->_double = c._double;
+        this->_isNan = c._isNan;
+        this->_isInf = c._isInf;
+        this->_isString = c._isString;
+    }
     return (*this);
 }
 
