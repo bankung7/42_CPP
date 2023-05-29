@@ -47,7 +47,6 @@ void identify(Base& p)
         std::cout << "Don't know" << std::endl;
 }
 
-
 int main(void)
 {
     Base* ptr = generate();
@@ -59,3 +58,7 @@ int main(void)
 
     return (0);
 }
+
+// dynamic cast is a runtime cast which used to poerform conversion of one type variable to another
+// only on the class pointers and references.
+// it checks the valid vasting of the variable at the run time, and if the casting fail, it return null

@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Serializer.hpp"
 
-
 int main(void)
 {
     Data* dptr = new Data;
@@ -24,6 +23,10 @@ int main(void)
     std::cout << "dptr : " << d2ptr << " => " << d2ptr->c << " => " << d2ptr->seq << std::endl;
 
     delete dptr;
-    
+
     return (0);
 }
+
+// reinterpret cast is used to cast a pointer to any other type of pointer.
+// it does not check whether the pointer or the data pointed to by the pointer is the same or not.
+// it can cast a pointer to an integer or vice versa.
