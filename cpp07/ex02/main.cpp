@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Array.hpp>
+#include "Array.hpp"
 
 #define MAX_VAL 750
 int main(int, char**)
@@ -27,6 +27,7 @@ int main(int, char**)
             return 1;
         }
     }
+
     try
     {
         numbers[-2] = 0;
@@ -35,6 +36,7 @@ int main(int, char**)
     {
         std::cerr << e.what() << '\n';
     }
+
     try
     {
         numbers[MAX_VAL] = 0;
@@ -49,5 +51,37 @@ int main(int, char**)
         numbers[i] = rand();
     }
     delete [] mirror;//
+
+    {
+        std::cout << "== test == empty arr ==" << std::endl;
+        Array<std::string> arr;
+        std::cout << "it size " << arr.size() << std::endl;
+        try
+        {
+            std::cout << arr[1] << std::endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+    {
+        std::cout << "== test == string arr ==" << std::endl;
+        Array<std::string> arr(5);
+        std::cout << "it size " << arr.size() << std::endl;
+        for (int i = 0; i < (int)arr.size(); i++)
+            arr[i] = "Hello";
+        try
+        {
+            for (int i = 0; i < (int)arr.size(); i++)
+                std::cout << arr[i] << std::endl;
+            std::cout << arr[arr.size()] << std::endl;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+        
+    }
     return 0;
 }
