@@ -12,7 +12,7 @@ private:
     unsigned int _size;
 
 public:
-    class OutOfBoundException: public std::exception {
+    class OutOfRangeException: public std::exception {
         public:
             const char* what(void) const throw() {
                 return ("Index is out of bound");
@@ -41,7 +41,7 @@ public:
     // subscript operator
     T& operator[](unsigned int n) {
         if (n >= _size)
-            throw (OutOfBoundException());
+            throw (OutOfRangeException());
         return (_arr[n]);
     }
     ~Array(void) {
