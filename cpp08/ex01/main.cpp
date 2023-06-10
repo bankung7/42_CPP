@@ -12,11 +12,11 @@ int main()
         sp.addNumber(11);
         // sp.addNumber(11);
 
-        std::vector<int>::iterator it;
-        for (it = sp.vec.begin(); it != sp.vec.end(); it++)
-            std::cout << *it << std::endl;
-        // std::cout << sp.shortestSpan() << std::endl;
-        // std::cout << sp.longestSpan() << std::endl;
+        // std::vector<int>::iterator it;
+        // for (it = sp.vec.begin(); it != sp.vec.end(); it++)
+        //     std::cout << *it << std::endl;
+        std::cout << sp.shortestSpan() << std::endl;
+        std::cout << sp.longestSpan() << std::endl;
     }
     catch (const std::exception& e){
         std::cerr << e.what() << std::endl;

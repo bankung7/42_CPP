@@ -2,33 +2,37 @@
 #define SPAN_HPP
 
 #include <vector>
+#include <algorithm>
 #include <exception>
+
+#include <iostream>
 
 class Span
 {
 
 private:
     unsigned int N;
-    Span(void);
 
 public:
+    std::vector<int>vec;
 
-    std::vector<int> vec;
-    class OverRangeException: public std::exception {
-        public:
-            const char* what(void) const throw() {
-                return ("Range is over limit");
-            };
-    };
-
+    Span(void);
     Span(unsigned int N);
     Span(const Span &c);
     Span& operator=(const Span &c);
     ~Span(void);
 
+    class OufOfRange: public std::exception{
+        const char* what(void) const throw();
+    };
+
+    class LessNumber: public std::exception{
+        const char* what(void) const throw();
+    };
+
     void addNumber(int);
-    int shortestSpan(void);
-    int longestSpan(void);
+    int shortestSpan(void) const;
+    int longestSpan(void) const;
 
 };
 
