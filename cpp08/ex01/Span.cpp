@@ -45,14 +45,37 @@ int Span::shortestSpan(void) const
 {
     if (vec.size() <= 1)
         throw LessNumber();
-    int max = *max_element(vec.begin(), vec.end());
-    int min = *min_element(vec.begin(), vec.end());
-    return (max - min);
+    std::vector<int>::const_iterator it = vec.begin();
+    int min = INT_MAX;
+    for (; it != vec.end(); it++)
+    {
+        std::vector<int>::const_iterator its = (it + 1);
+        for (; its != vec.end(); its++)
+        {
+            if ((abs(*it - *its)) < min)
+            {
+                // std::cout << *it << " " << *its << std::endl; 
+                min = abs(*it - *its);
+            }
+            if (*it == *its)
+                std::cout << *it << " " << *its << std::endl; 
+        }
+    }
+    return (min);
 }
 
 int Span::longestSpan(void) const
 {
     if (vec.size() <= 1)
         throw LessNumber();
-    return (0);
+    int max = *max_element(vec.begin(), vec.end());
+    int min = *min_element(vec.begin(), vec.end());
+    return (max - min);
+}
+
+void Span::addMultiNumber(std::vector<int> vect)
+{
+    if (vec.size() + vect.size() > N)
+        throw OufOfRange();
+    vec.insert(vec.end(), vect.begin(), vect.end());
 }
