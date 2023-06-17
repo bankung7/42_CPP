@@ -1,4 +1,4 @@
-NAME = MutantStack
+NAME = mutant
 
 CC = c++
 
