@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <exception>
+#include <limits>
 
 #include <iostream>
 
@@ -14,7 +15,7 @@ private:
     unsigned int N;
 
 public:
-    std::vector<int>vec;
+    std::vector<int> vec;
 
     Span(void);
     Span(unsigned int N);
@@ -33,6 +34,8 @@ public:
     void addNumber(int);
     int shortestSpan(void) const;
     int longestSpan(void) const;
+
+    void addMultiNumber(std::vector<int>);
 
 };
 
