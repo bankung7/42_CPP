@@ -125,7 +125,8 @@ void ScalarConverter::caseInt(void)
 
     cprint(static_cast<char>(this->_int)); std::cout << std::endl;
     cprint(this->_int); std::cout << std::endl;
-    std::cout << std::fixed << std::setprecision(1);
+    if (static_cast<int>(this->_int) == this->_int)
+        std::cout << std::fixed << std::setprecision(1);
     cprint(static_cast<float>(this->_int)); std::cout << std::endl;
     cprint(static_cast<double>(this->_int)); std::cout << std::endl;
 }
@@ -141,7 +142,8 @@ void ScalarConverter::caseFloat(void)
 
     cprint(static_cast<char>(this->_float)); std::cout << std::endl;
     cprint(static_cast<int>(this->_float)); std::cout << std::endl;
-    std::cout << std::fixed << std::setprecision(1);
+    if (static_cast<int>(this->_float) == this->_float)
+        std::cout << std::fixed << std::setprecision(1);
     cprint(this->_float); std::cout << std::endl;
     cprint(static_cast<double>(this->_float)); std::cout << std::endl;
 }
@@ -152,7 +154,8 @@ void ScalarConverter::caseDouble(void)
 
     cprint(static_cast<char>(this->_double)); std::cout << std::endl;
     cprint(static_cast<int>(this->_double)); std::cout << std::endl;
-    std::cout << std::fixed << std::setprecision(1);
+    if (static_cast<int>(this->_double) == this->_double)
+        std::cout << std::fixed << std::setprecision(1);
     cprint(static_cast<float>(this->_double)); std::cout << std::endl;
     cprint(this->_double); std::cout << std::endl;
 }
