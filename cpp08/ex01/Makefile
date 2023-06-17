@@ -1,4 +1,4 @@
-NAME = mutant
+NAME = span
 
 CC = c++
 
@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -g -std=c++98
 
 RM = rm -rf
 
-SRCS = main.cpp
+SRCS = main.cpp Span.cpp
 
 OBJS_DIR = objs/
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))

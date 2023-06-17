@@ -73,9 +73,9 @@ int Span::longestSpan(void) const
     return (max - min);
 }
 
-void Span::addMultiNumber(std::vector<int> vect)
+void Span::addMultiNumber(std::vector<int> vec)
 {
-    if (vec.size() + vect.size() > N)
+    if (vec.size() + vec.size() > N)
         throw OufOfRange();
-    vec.insert(vec.end(), vect.begin(), vect.end());
+    vec.insert(vec.end(), vec.begin(), vec.end());
 }
