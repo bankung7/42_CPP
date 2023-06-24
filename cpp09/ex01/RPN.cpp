@@ -57,22 +57,21 @@ void RPN::input(char c)
     // std::cout << this->_stack.top() << std::endl;
 }
 
+// try readjust by last to value next time.
 void RPN::operations(char c)
 {
     if (this->_stack.size() < 2)
         throw OperationError();
     int v1 = this->_stack.top();
     this->_stack.pop();
-    int v2 = this->_stack.top();
-    this->_stack.pop();
     if (c == '+')
-        this->_stack.push(v2 + v1);
+        this->_stack.top() += v1;
     else if (c == '-')
-        this->_stack.push(v2 - v1);
+        this->_stack.top() -= v1;
     else if (c == '*')
-        this->_stack.push(v2 * v1);
+        this->_stack.top() *= v1;
     else if (c == '/')
-        this->_stack.push(v2 / v1);
+        this->_stack.top() /= v1;
     // std::cout << "=== > " << this->_stack.top() << std::endl;
 }
 
