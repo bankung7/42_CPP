@@ -1,10 +1,8 @@
 #include <iostream>
-#include <algorithm>
-#include <stack>
 #include "MutantStack.hpp"
-
+#include <stack>
 #include <vector>
-#include <list>
+
 
 int main()
 {
