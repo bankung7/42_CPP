@@ -10,6 +10,7 @@ int main(void)
     uintptr_t iptr = 0;
     Data* d2ptr = 0;
 
+    std::cout << "Original Data" << std::endl;
     std::cout << "dptr : " << dptr << " => " << dptr->c << " => " << dptr->seq << std::endl;
     std::cout << "iptr : " << iptr << std::endl;
     std::cout << "d2ptr : " << d2ptr << std::endl;
@@ -17,9 +18,11 @@ int main(void)
     std::cout << std::endl;
 
     iptr = Serializer::serialize(dptr);
-    std::cout << "iptr : " << iptr << std::endl;
+    std::cout << "Make it Serialize" << std::endl;
+    std::cout << "iptr : " << iptr << std::endl << std::endl;
 
     d2ptr = Serializer::deserialize(iptr);
+    std::cout << "Convert it back to Data" << std::endl;
     std::cout << "dptr : " << d2ptr << " => " << d2ptr->c << " => " << d2ptr->seq << std::endl;
 
     delete dptr;

@@ -27,7 +27,8 @@ public:
 
     MutantStack<T, container>::iterator begin(void) { return (this->c.begin()); };
     MutantStack<T, container>::iterator end(void) { return (this->c.end()); };
-
+    MutantStack<T, container>::const_iterator cbegin(void) { return (this->c.begin()); };
+    MutantStack<T, container>::const_iterator cend(void) { return (this->c.end()); };
    
 };
 

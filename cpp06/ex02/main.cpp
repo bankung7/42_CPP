@@ -37,21 +37,37 @@ void identify(Base* p)
 // Using a pointer inside this function is forbidden.
 void identify(Base& p)
 {
-    if (dynamic_cast<A*>(&p) != NULL)
+    try{
+        A& a = dynamic_cast<A &>(p);
+        (void)a;
         std::cout << "this is A pointer" << std::endl;
-    else if (dynamic_cast<B*>(&p) != NULL)
+        return ;
+    } catch (...) {};
+
+    try{
+        B& b = dynamic_cast<B &>(p);
+        (void)b;
         std::cout << "this is B pointer" << std::endl;
-    else if (dynamic_cast<C*>(&p) != NULL)
+        return ;
+    } catch (...) {};
+
+    try{
+        C& c = dynamic_cast<C &>(p);
+        (void)c;
         std::cout << "this is C pointer" << std::endl;
-    else
-        std::cout << "Don't know" << std::endl;
+        return ;
+    } catch (...) {};
 }
 
 int main(void)
 {
     Base* ptr = generate();
 
+    std::cout << "actual type" << std::endl;
     identify(ptr);
+
+    std::cout << std::endl;
+    std::cout << "actual type by reference" << std::endl;
     identify(*ptr);
 
     delete ptr;
@@ -59,6 +75,6 @@ int main(void)
     return (0);
 }
 
-// dynamic cast is a runtime cast which used to poerform conversion of one type variable to another
+// dynamic cast is a runtime cast which used to perform conversion of one type variable to another
 // only on the class pointers and references.
-// it checks the valid vasting of the variable at the run time, and if the casting fail, it return null
+// it checks the valid casting of the variable at the run time, and if the casting fail, it return null
