@@ -1,7 +1,8 @@
-#ifndef ARRAY_H
-# define ARRAY_H
+#ifndef ARRAY_HPP
+#define ARRAY_HPP
 
 #include <iostream>
+#include <stdexcept>
 
 template <typename T>
 class Array
@@ -12,44 +13,46 @@ private:
     unsigned int _size;
 
 public:
-    class OutOfRangeException: public std::exception {
-        public:
-            const char* what(void) const throw() {
-                return ("Index is out of bound");
-            };
-    };
-
+    // construction with no parameter
     Array(void): _arr(0), _size(0) {};
+
+    // construction with an unsinged int as a parameter
     Array(unsigned int n): _arr(new T[n]), _size(n) {};
+
+    // copy constructor
     Array(const Array& c): _arr(new T[c._size]), _size(c._size) {
         for (int i = 0; i < (int)this->_size; i++)
             this->_arr[i] = c._arr[i];
-    };
+    }
+
+    // assignment operator
     Array& operator=(const Array& c) {
-        if (this == &c)
-            return (*this);
-        if (this->_size != c._size)
+        if (this != &c)
         {
             delete[] this->_arr;
-            this->_arr = new T[c._size];
-            this->_size = c._size;
+            *this = c;
         }
-        for (int i = 0; i < (int)this->_size; i++)
-            this->_arr[i] = c._arr[i];
         return (*this);
-    };
-    // subscript operator
-    T& operator[](unsigned int n) {
-        if (n >= _size)
-            throw (OutOfRangeException());
-        return (_arr[n]);
     }
-    ~Array(void) {
-        if (this->_size != 0)
-            delete[] _arr;  
-    };
 
-    unsigned int size(void) const { return (_size); };
+    // subscription operator
+    T& operator[](int i) {
+        if (i < 0 || i >= (int)this->_size )
+            throw std::runtime_error("Out of Range");
+        return (this->_arr[i]);
+    }
+
+    // deconstructor
+    ~Array(void) {
+        if (this->_size > 0)
+            delete[] this->_arr; 
+    }
+
+    // function that return number of elements in the array
+    unsigned int size(void) const {
+        return (this->_size);
+    }
+
 };
 
 #endif

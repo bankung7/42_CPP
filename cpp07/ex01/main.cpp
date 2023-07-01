@@ -4,6 +4,11 @@
 int main(void)
 {
     {
+        std::cout << "Enpty Array" << std::endl;
+        int arr[0];
+        iter(arr, 2, &talk);
+    }
+    {
         std::cout << "Test for char arr" << std::endl;
         char arr[5] = {'a', 'b', 'c', 'd', 'e'};
         iter(arr, 5, &talk);
