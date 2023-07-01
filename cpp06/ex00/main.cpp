@@ -1,7 +1,6 @@
 #include <iostream>
 #include "ScalarConverter.hpp"
 #include <sstream>
-#include <limits>
 
 int main(int argc, char** argv)
 {
@@ -11,8 +10,12 @@ int main(int argc, char** argv)
         return (1);
     }
 
-    ScalarConverter con;
-    con.convert(argv[1]);
+    std::stringstream ss;
+    ss << std::string(argv[1]);
+    double dd;
+    ss >> dd;
+    
+    ScalarConverter conver(dd);
 }
 
 // static cast is a runtime casting, which convert or cast one data type to another.
