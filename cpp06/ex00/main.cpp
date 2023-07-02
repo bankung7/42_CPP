@@ -1,6 +1,4 @@
-#include <iostream>
 #include "ScalarConverter.hpp"
-#include <sstream>
 
 int main(int argc, char** argv)
 {
@@ -10,11 +8,15 @@ int main(int argc, char** argv)
         return (1);
     }
 
-    std::stringstream ss;
-    ss << std::string(argv[1]);
-    double dd;
-    ss >> dd;
+    // std::stringstream ss;
+    // ss << std::string(argv[1]);
+    // double dd;
+    // ss >> dd;
+
+    double dd = atof(argv[1]);
     
+    // std::cout << dd << " : " << (dd == dd) << std::endl;
+
     ScalarConverter conver(dd);
 }
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "Array.hpp"
 
 #define MAX_VAL 750
@@ -11,12 +12,13 @@ int main(int, char**)
     {
         std::cout << "Try to any array size" << std::endl;
         Array<int> num(5);
-
+        num[0] = 1;
     }
 
     Array<int> numbers(MAX_VAL);
     int* mirror = new int[MAX_VAL];
     srand(time(NULL));
+    std::cout << "try copy number into our array" << std::endl;
     for (int i = 0; i < MAX_VAL; i++)
     {
         const int value = rand();
@@ -25,10 +27,12 @@ int main(int, char**)
     }
     //SCOPE
     {
+        std::cout << "try copy cons and assignment" << std::endl;
         Array<int> tmp = numbers;
         Array<int> test(tmp);
     }
 
+    std::cout << "try checking that is same value in arrays" << std::endl;
     for (int i = 0; i < MAX_VAL; i++)
     {
         // std::cout << numbers[i] << " : " << mirror[i] << std::endl;
@@ -38,6 +42,8 @@ int main(int, char**)
             return 1;
         }
     }
+
+    std::cout << "try negative index" << std::endl;
     try
     {
         numbers[-2] = 0;
@@ -46,6 +52,8 @@ int main(int, char**)
     {
         std::cerr << e.what() << '\n';
     }
+
+    std::cout << "try over index" << std::endl;
     try
     {
         numbers[MAX_VAL] = 0;
@@ -55,13 +63,15 @@ int main(int, char**)
         std::cerr << e.what() << '\n';
     }
 
+    std::cout << "try put new value in it" << std::endl;
     for (int i = 0; i < MAX_VAL; i++)
     {
         numbers[i] = rand();
     }
-    {
-        std::cout << "what is the size : " << numbers.size() << std::endl;
-    }
-    delete [] mirror;//
+
+    std::cout << "what is the size : " << numbers.size() << std::endl;
+
+    delete [] mirror;
+    
     return 0;
 }

@@ -4,14 +4,14 @@ Span::Span(void)
 {
 };
 
-Span::Span(unsigned int n): N(n)
+Span::Span(unsigned int n): _N(n)
 {
 };
 
 Span::Span(const Span &c)
 {
-    this->N = c.N;
-    std::vector<int>vec(c.vec);
+    this->_N = c._N;
+    std::vector<int>_vec(c._vec);
 };
 
 Span& Span::operator=(const Span &c)
@@ -31,26 +31,26 @@ const char* Span::OufOfRange::what(void) const throw()
 
 const char* Span::LessNumber::what(void) const throw()
 {
-    return ("Less Number");
+    return ("Member is too less");
 }
 
 void Span::addNumber(int n)
 {
-    if (vec.size() >= N)
+    if (this->_vec.size() >= this->_N)
         throw OufOfRange();
-    vec.push_back(n);
+    this->_vec.push_back(n);
 };
 
 int Span::shortestSpan(void) const
 {
-    if (vec.size() <= 1)
+    if (this->_vec.size() <= 1)
         throw LessNumber();
-    std::vector<int>::const_iterator it = vec.begin();
+    std::vector<int>::const_iterator it = this->_vec.begin();
     int min = INT_MAX;
-    for (; it != vec.end(); it++)
+    for (; it != this->_vec.end(); it++)
     {
         std::vector<int>::const_iterator its = (it + 1);
-        for (; its != vec.end(); its++)
+        for (; its != this->_vec.end(); its++)
         {
             if ((abs(*it - *its)) < min)
             {
@@ -58,7 +58,7 @@ int Span::shortestSpan(void) const
                 min = abs(*it - *its);
             }
             if (*it == *its)
-                std::cout << *it << " " << *its << std::endl; 
+                std::cout << "Duplicate " << *it << " " << *its << std::endl; 
         }
     }
     return (min);
@@ -66,16 +66,16 @@ int Span::shortestSpan(void) const
 
 int Span::longestSpan(void) const
 {
-    if (vec.size() <= 1)
+    if (this->_vec.size() <= 1)
         throw LessNumber();
-    int max = *max_element(vec.begin(), vec.end());
-    int min = *min_element(vec.begin(), vec.end());
+    int max = *max_element(this->_vec.begin(), this->_vec.end());
+    int min = *min_element(this->_vec.begin(), this->_vec.end());
     return (max - min);
 }
 
-void Span::addMultiNumber(std::vector<int> vec)
+void Span::addMultiNumber(std::vector<int> ivec)
 {
-    if (vec.size() + vec.size() > N)
-        throw OufOfRange();
-    vec.insert(vec.end(), vec.begin(), vec.end());
+    if (this->_vec.size() + ivec.size() > this->_N)
+        throw Span::OufOfRange();
+    this->_vec.insert(this->_vec.end(), ivec.begin(), ivec.end());
 }

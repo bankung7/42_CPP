@@ -2,7 +2,6 @@
 #define ARRAY_HPP
 
 #include <iostream>
-#include <stdexcept>
 
 template <typename T>
 class Array
@@ -38,7 +37,7 @@ public:
     // subscription operator
     T& operator[](int i) {
         if (i < 0 || i >= (int)this->_size )
-            throw std::runtime_error("Out of Range");
+            throw OutOfBound();
         return (this->_arr[i]);
     }
 
@@ -52,6 +51,14 @@ public:
     unsigned int size(void) const {
         return (this->_size);
     }
+
+    // class exception
+    class OutOfBound: public std::exception {
+        public:
+            char const* what(void) const throw () {
+                return ("Out of Bound");
+            }
+    };
 
 };
 
