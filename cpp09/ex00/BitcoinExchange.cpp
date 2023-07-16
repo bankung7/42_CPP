@@ -25,7 +25,7 @@ BitcoinExchange::~BitcoinExchange(void)
 void BitcoinExchange::setData(std::string data)
 {
     std::fstream infile;
-    infile.open(data, std::ios::in);
+    infile.open(data.c_str(), std::ios::in);
     if (!infile.is_open())
         throw std::invalid_argument("Error: Something wrong with Data File");
 
@@ -39,17 +39,9 @@ void BitcoinExchange::setData(std::string data)
     while (getline(infile, line))
     {
         // get first arg
-        std::string::iterator it = line.begin();
-        it = std::find(line.begin(), line.end(), ',');
-        if (it == line.end())
-        {
-            std::cout << "Something wrong with this line : " << line << std::endl;
-            continue ;
-        }
 
         // get second arg
 
-        
         // check if last arg fail
     }
 

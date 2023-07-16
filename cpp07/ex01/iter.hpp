@@ -1,14 +1,13 @@
 #ifndef ITER_HPP
 # define ITER_HPP
 
-# include <cstdlib>
 # include <iostream>
-# include <sstream>
+# include <cstdlib>
 
 template <typename T>
-void iter(T *arr, size_t size, void (*f)(const T &))
+void iter(T *arr, size_t size, void (*f)(const T&))
 {
-    if (size <= 0)
+    if (!arr || size <= 0 || !f)
         return ;
     for (int i = 0; i < (int)size; i++)
         f(arr[i]);

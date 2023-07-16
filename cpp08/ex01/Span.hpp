@@ -4,18 +4,17 @@
 #include <vector>
 #include <algorithm>
 #include <exception>
-#include <limits>
-
+#include <climits>
 #include <iostream>
 
 class Span
 {
 
 private:
-    unsigned int N;
+    unsigned int _N;
+    std::vector<int> _vec;
 
 public:
-    std::vector<int> vec;
 
     Span(void);
     Span(unsigned int N);
