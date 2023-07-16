@@ -5,15 +5,6 @@
 # include <cstdlib>
 
 template <typename T>
-void iter(T *arr, size_t size, void (*f)(const T&))
-{
-    if (!arr || size <= 0 || !f)
-        return ;
-    for (int i = 0; i < (int)size; i++)
-        f(arr[i]);
-}
-
-template <typename T>
 void iter(T *arr, size_t size, void (*f)(T&))
 {
     if (!arr || size <= 0 || !f)
@@ -22,11 +13,13 @@ void iter(T *arr, size_t size, void (*f)(T&))
         f(arr[i]);
 }
 
-// test function
 template <typename T>
-void talk(T &thing)
+void iter(T *arr, size_t size, void (*f)(const T&))
 {
-    std::cout << thing << std::endl;
+    if (!arr || size <= 0 || !f)
+        return ;
+    for (int i = 0; i < (int)size; i++)
+        f(arr[i]);
 }
 
 #endif
