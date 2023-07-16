@@ -38,7 +38,7 @@ void ScalarConverter::castChar(void)
     if ((this->_num != this->_num) || this->_isstr == 1
         || this->_num < 0 || this->_num > 127 )
         std::cout << "imposible";
-    else if (this->_num < 33 || this->_num > 126)
+    else if (this->_num < 32 || this->_num > 126)
         std::cout << "Non displayable";
     else
         std::cout << static_cast<char>(this->_num);
