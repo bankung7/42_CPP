@@ -2,27 +2,32 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <iostream>
-#include <stdexcept>
+#include <map>
+#include <string>
+#include <ctime>
 #include <fstream>
 #include <sstream>
-#include <map>
+#include <stdexcept>
+#include <algorithm>
 
-class BitcoinExchange
-{
+class BitcoinExchange {
 
 private:
-    std::string _data;
-    std::string _input;
-    std::map<std::string, double> _db;
+    std::map<time_t, double> _db;
 
 public:
     BitcoinExchange(void);
-    BitcoinExchange(const BitcoinExchange& c);
+    BitcoinExchange(const BitcoinExchange &c);
     BitcoinExchange& operator=(const BitcoinExchange &c);
     ~BitcoinExchange(void);
 
-    void setData(std::string data);
-    void setInput(std::string input);
+    void makeDB(std::string filename);
+    void readInput(std::string input);
+
+    time_t convertDate(std::string &input);
+    double convertValue(std::string &input);
+    int stringToInt(std::string &input);
+
 };
 
 #endif

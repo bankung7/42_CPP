@@ -8,16 +8,16 @@ int main(int argc, char **argv)
         return (1);
     }
 
-    try
-    {
-        BitcoinExchange btc;
-        btc.setData("data.csv");
-        btc.setInput(argv[1]);
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
+    // calling
+    BitcoinExchange bt;
 
+    try {
+        bt.makeDB(std::string("data.csv"));
+        bt.readInput(std::string(argv[1]));
+    }
+    catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
+    }
+    
     return (0);
 };
