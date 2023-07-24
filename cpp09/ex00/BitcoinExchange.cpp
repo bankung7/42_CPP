@@ -56,9 +56,13 @@ void BitcoinExchange::makeDB(std::string filename) {
         std::getline(column, valueInput, ',');
         double value;
         value = convertValue(valueInput);
+        if (value < 0 || value > std::numeric_limits<int>::max()) {
+            std::cout << "[WARNING] : number over max value >> " << valueInput << std::endl;
+            continue ;
+        }
         // std::cout << ctime(&fdate) << " = " << value << std::endl;
 
-        // not sure why but it sorted
+        // insert into db
         this->_db.insert(std::pair<time_t, double>(fdate, value));
     }
     dbFile.close();
@@ -73,64 +77,64 @@ void BitcoinExchange::readInput(std::string input) {
     if (!ifile.is_open())
         throw std::runtime_error("Error : input file is not found");
 
+    // loop line and skip first line
     std::string row;
     std::getline(ifile, row, '\n');
     while (std::getline(ifile, row, '\n')) {
-        // check format to skip and give warning
+        // check if not 2 part by |
         if (std::count(row.begin(), row.end(), '|') != 1) {
             std::cout << "Error : bad input => " << row << std::endl;
-            continue ;
+            continue;
         }
-
-        // split row
-        std::stringstream column(row);
-
+        
+        // prep for getline
+        std::stringstream ssrow;
+        ssrow << row;
+        
         // get date
-        std::string dateInput;
-        std::getline(column, dateInput, '|');
-        if (std::count(dateInput.begin(), dateInput.end(), '-') != 2) {
-            std::cout << "[WARNING] : date in wrong format [YYYY-MM-DD] >> " << dateInput << std::endl;
+        std::string idate;
+        std::getline(ssrow, idate, '|');
+        time_t vdate = convertDate(idate);
+        if (vdate == -1) {
+            std::cout << "Error : bad date format." << std::endl;
             continue ;
         }
-        std::time_t fdate = convertDate(dateInput);
-        // if (fdate == 0) {
-        //     std::cout << "[WARNING] : date in wrong format [YYYY-MM-DD] >> " << dateInput << std::endl;
-        //     continue ;
-        // }
-        (void)fdate;
 
         // get value
-        std::string valueInput;
-        std::getline(column, valueInput, '|');
-        double value;
-        value = convertValue(valueInput);
-
-        // check
-        if (value < 0) {
+        std::string ivalue;
+        std::getline(ssrow, ivalue, '\n');
+        double vvalue = convertValue(ivalue);
+        if (vvalue < 0) {
             std::cout << "Error : not a positive number." << std::endl;
             continue ;
         }
-        if (value > std::numeric_limits<int>::max()) {
+        if (vvalue > 1000) {
             std::cout << "Error : too large a number." << std::endl;
             continue ;
         }
-        // fixed this 
-        // std::map<time_t, double>::iterator it = this->_db.upper_bound(fdate);
+
+        // std::cout << std::put_time(std::localtime(&vdate), "%Y-%m-%d") << "  " << vvalue << std::endl;
+    
+        double price;
         std::map<time_t, double>::iterator it;
-        it = this->_db.find(fdate);
-        if (it != this->_db.end())
-            std::cout << dateInput << " => " << value << " = " << (value * it->second) << std::endl;
+        it = this->_db.lower_bound(vdate);
+        if (it->first == vdate)
+            price = it->second;
         else {
-            it = this->_db.upper_bound(fdate);
-            if (it != this->_db.begin()) {
-                it--;
-                std::cout << dateInput << " => " << value << " = " << (value * it->second) << std::endl;
+            if (it == this->_db.begin()) {
+                std::cout << "Error : bad input" << std::endl;
+                continue ;
             }
-            else {
-                std::cout << "Error : no data" << std::endl;
-            }
+            price = (--it)->second;
         }
+        price *= vvalue;
+        if (price > std::numeric_limits<double>::max()) {
+            std::cout << "Error : exceed max value." << std::endl;
+            continue ;
+        }
+        std::cout << std::put_time(std::localtime(&vdate), "%Y-%m-%d") << "  "  << (price) << std::endl;
     }
+
     ifile.close();
 };
 
@@ -149,14 +153,10 @@ time_t BitcoinExchange::convertDate(std::string &input) {
     int vmonth = stringToInt(imonth);
     int vday = stringToInt(iday);
 
-    // std::cout << vday << "-" << vmonth << "-" << vyear << std::endl;
+    if (vyear < 1900 || vyear > 2050 || vmonth < 1 || vday < 1)
+        return (-1);
 
-    // check input
-    // still not check leap year or day in month
-    // if ((vyear < 1970 || vyear > 2100) ||
-    //     (vmonth < 1 || vmonth > 12) ||
-    //     (vday < 1 || vday > 31))
-    //     return (0);
+    // std::cout << vday << "-" << vmonth << "-" << vyear << std::endl;
 
     std::tm tm;
     tm.tm_year = vyear - 1900;
@@ -167,6 +167,10 @@ time_t BitcoinExchange::convertDate(std::string &input) {
     tm.tm_sec = 0;
     tm.tm_isdst = 0;
     std::time_t t = std::mktime(&tm);
+
+    // std::cout << "==== " << tm.tm_year + 1900 << " " << tm.tm_mon + 1 << " " << tm.tm_mday << std::endl;
+    if (tm.tm_year != vyear - 1900 || tm.tm_mon != vmonth - 1 || tm.tm_mday != vday)
+        return (-1);
     return (t);
 };
 
