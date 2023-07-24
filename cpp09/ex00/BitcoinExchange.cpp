@@ -3,12 +3,12 @@
 BitcoinExchange::BitcoinExchange(void) {};
 
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &c) {
-    (void)c;
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &c): _db(c._db) {
 };
 
 BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &c) {
-    (void)c;
+    if (this != &c)
+        this->_db = c._db;
     return (*this);
 };
 
