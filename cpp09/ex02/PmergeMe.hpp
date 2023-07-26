@@ -9,17 +9,18 @@
 #include <exception>
 #include <limits>
 #include <utility>
+#include <iomanip>
 
 class PmergeMe {
 
 private:
     std::vector<int> _uvector;
+
     std::vector<int> _svector;
     std::vector<std::pair<int, int> > _vpair;
 
-    std::list<int> _ulist;
     std::list<int> _slist;
-    std::list<std::pair<int, int> > _vlist;
+    std::list<std::pair<int, int> > _lpair;
 
 public:
     PmergeMe(void);
@@ -29,12 +30,12 @@ public:
 
     // test functions
     void readPair(void);
-
-    // vector
-    void readVector(std::string text, std::vector<int> vector);
     void addNumber(std::string input);
-    void makePair(void);
+    void readVector(std::string text, std::vector<int> vector);
+
     void vsort(void);
+    void lsort(void);
+
 };
 
 #endif
