@@ -20,7 +20,7 @@ void BitcoinExchange::makeDB(std::string filename) {
 
     // check file existance
     std::ifstream dbFile;
-    dbFile.open(filename);
+    dbFile.open(filename.c_str());
     if (!dbFile.is_open())
         throw std::runtime_error("Error : [ data.csv ] => file is not found");
 
@@ -73,7 +73,7 @@ void BitcoinExchange::readInput(std::string input) {
 
     // check file existance
     std::ifstream ifile;
-    ifile.open(input);
+    ifile.open(input.c_str());
     if (!ifile.is_open())
         throw std::runtime_error("Error : input file is not found");
 
@@ -113,8 +113,6 @@ void BitcoinExchange::readInput(std::string input) {
             continue ;
         }
 
-        // std::cout << std::put_time(std::localtime(&vdate), "%Y-%m-%d") << "  " << vvalue << std::endl;
-    
         double price;
         std::map<time_t, double>::iterator it;
         it = this->_db.lower_bound(vdate);
@@ -132,7 +130,7 @@ void BitcoinExchange::readInput(std::string input) {
             std::cout << "Error : exceed max value." << std::endl;
             continue ;
         }
-        std::cout << std::put_time(std::localtime(&vdate), "%Y-%m-%d") << "  "  << (price) << std::endl;
+        std::cout << idate << "  "  << (price) << std::endl;
     }
 
     ifile.close();
