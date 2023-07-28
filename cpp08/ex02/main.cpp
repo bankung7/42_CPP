@@ -33,6 +33,7 @@ int main()
         std::cout << *it << std::endl;
         ++it;
     }
+    
     std::cout << "==== Try with real stack ====" << std::endl;
     std::stack<int> s(mstack);
     std::cout << "Current stack size : " << mstack.size() << std::endl;
