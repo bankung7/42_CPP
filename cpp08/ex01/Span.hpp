@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <exception>
 #include <list>
+#include <climits>
 
 class Span {
 
