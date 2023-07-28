@@ -1,41 +1,30 @@
 #ifndef SPAN_HPP
 #define SPAN_HPP
 
-#include <vector>
+#include <iostream>
 #include <algorithm>
 #include <exception>
-#include <climits>
-#include <iostream>
+#include <list>
 
-class Span
-{
+class Span {
 
 private:
     unsigned int _N;
-    std::vector<int> _vec;
+    std::list<int> _list;
 
 public:
-
     Span(void);
-    Span(unsigned int N);
-    Span(const Span &c);
-    Span& operator=(const Span &c);
+    Span(unsigned int n);
+    Span(Span const &c);
+    Span &operator=(Span const &c);
     ~Span(void);
 
-    class OufOfRange: public std::exception{
-        const char* what(void) const throw();
-    };
+    void addNumber(int n);
+    int shortestSpan(void);
+    int longestSpan(void);
 
-    class LessNumber: public std::exception{
-        const char* what(void) const throw();
-    };
-
-    void addNumber(int);
-    int shortestSpan(void) const;
-    int longestSpan(void) const;
-
-    void addMultiNumber(std::vector<int>);
-
+    void addNumberInOne(std::list<int> lst);
+    void readSpan(void);
 };
 
 #endif
