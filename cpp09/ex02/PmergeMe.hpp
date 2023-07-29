@@ -3,25 +3,17 @@
 
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+#include <limits>
 #include <vector>
 #include <list>
-#include <algorithm>
-#include <exception>
-#include <limits>
-#include <utility>
-#include <iomanip>
-#include <ctime>
 
 class PmergeMe {
 
 private:
     std::vector<int> _uvector;
-
     std::vector<int> _svector;
-    std::vector<std::pair<int, int> > _vpair;
-
-    std::list<int> _slist;
-    std::list<std::pair<int, int> > _lpair;
+    std::list<int> _ulist;
 
 public:
     PmergeMe(void);
@@ -29,20 +21,21 @@ public:
     PmergeMe operator=(const PmergeMe &c);
     ~PmergeMe(void);
 
-    // test functions
-    void readPair(void);
     void addNumber(std::string input);
-    void readVector(std::string text, std::vector<int> vector);
+    double getJacobstholIndex(int n);
 
-    void vsort(void);
-    void lsort(void);
+    // vector
+    void sortVector(void);
+
+
+    // test function
+    void readData(int n);
 
 };
 
 #endif
 
 // step
-// 1. create pair of number <int, int>
-// 2. sort each pair ascendingly <low, high>
-// 3. recursive sort the pair by high value in each pair
-// 4. put the low value of each pair by insertion sort
+// group input to pair
+// sort each pair 
+// sort the list based on high value of each pair

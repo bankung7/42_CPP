@@ -10,15 +10,13 @@ int main(int argc, char **argv) {
     PmergeMe pm;
     try
     {
-        for (int i = 1; i < argc; i++) {
-            pm.addNumber(std::string(argv[i]));
-        }
+        // add number
+        for (int i = 1; i < argc; i++)
+            pm.addNumber(argv[i]);
 
-        // vector
-        pm.vsort();
-        pm.lsort();
-        
         // display
+        pm.readData(0);
+        pm.sortVector();
     }
     catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

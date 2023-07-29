@@ -18,130 +18,90 @@ PmergeMe::~PmergeMe(void) {
 
 };
 
-// test function
-void PmergeMe::readVector(std::string text, std::vector<int> vector) {
-    std::cout << text << ": ";
-    std::vector<int>::iterator it = vector.begin();
-    for (; it != vector.end(); it++)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-};
-
-void PmergeMe::readPair(void) {
-    std::vector<std::pair<int, int> >::iterator it = this->_vpair.begin();
-    for (; it != this->_vpair.end(); it++)
-        std::cout << "[ " << it->first << " : " << it->second << " ]" << std::endl;
-};
-
 void PmergeMe::addNumber(std::string input) {
     std::stringstream ss;
     ss << input;
-    double number;
-    ss >> number;
-    if (ss.good() || ss.fail())
-        throw std::runtime_error("Error: Not a number has been input");
-    if (number < 0)
-        throw std::runtime_error("Error: Negative number has passed in");
-    if (number > std::numeric_limits<int>::max())
-        throw std::runtime_error("Error: Over integer value");
-    this->_uvector.push_back(number);
+    double n;
+    ss >> n;
+    if (ss.good() == 1 || ss.fail() == 1) {
+        std::cout << "[WARNING] : not a number => " << input << std::endl;
+        return ;
+    }
+    this->_uvector.push_back(n);
+    this->_ulist.push_back(n);
+}
+
+double PmergeMe::getJacobstholIndex(int n) {
+    if (n == 0)
+        return (0);
+    if (n == 1)
+        return (1);
+    return (getJacobstholIndex(k, n - 1) + (2 * getJacobstholIndex(k, n - 2)));
 };
 
-// Vector section
-void PmergeMe::vsort(void) {
+void PmergeMe::sortVector(void) {
 
-    // start
-    readVector("Before", this->_uvector);
-
-    // time start
-    std::clock_t start = std::clock();
-
-    // make pair
-    int n = this->_uvector.size() - this->_uvector.size() % 2;
-    for (int i = 0; i < n; i += 2)
-        this->_vpair.push_back(std::make_pair(this->_uvector[i], this->_uvector[i + 1]));
-
-    // sort each pair
-    std::vector<std::pair<int, int> >::iterator it = this->_vpair.begin();
-    for (; it != this->_vpair.end(); it++) {
-        if (it->first < it->second)
-            std::swap(it->first, it->second);
+    // pair the input
+    std::vector<std::pair<int, int> > pair;
+    int k = this->_uvector.size() - (this->_uvector.size() % 2);
+    for (int i = 0; i < k; i += 2) {
+        pair.push_back(std::pair<int, int>(this->_uvector[i], this->_uvector[i + 1]));
     }
 
-    // sort pair vector
-    std::sort(this->_vpair.begin(), this->_vpair.end());
-    // readPair();
+    // try read pair
+    std::vector<std::pair<int, int> >::iterator it = pair.begin();
 
-    // move the high value to new sorted vector
-    it = this->_vpair.begin();
-    for (; it != this->_vpair.end(); it++)
+    // sort each pair
+    while (it != pair.end()) {
+        if (it->first < it->second)
+            std::swap(it->first, it->second);
+        it++;
+    }
+
+    // sort pair
+    std::sort(pair.begin(), pair.end());
+
+    std::vector<int> pend;
+    // insert high value in mainchain
+    it = pair.begin();
+    while (it != pair.end()) {
         this->_svector.push_back(it->first);
-
-    // insert the low value into sorted vector
-    it = this->_vpair.begin();
-    for (; it != this->_vpair.end(); it++)
-        this->_svector.insert(std::upper_bound(this->_svector.begin(), this->_svector.end(), it->second), it->second);
-
-    // if odd left, insert now
-    int size = this->_uvector.size();
-    if (size % 2 == 1)
-        this->_svector.insert(std::upper_bound(this->_svector.begin(), this->_svector.end(), this->_uvector[size - 1]), this->_uvector[size - 1]);
-
-    start = std::clock() - start;
-
-    // // test print
-    readVector("After", this->_svector);
-
-    std::cout << std::fixed << std::setprecision(4);
-    std::cout << "Time to process a range of " << size << " elements with std::vector : ";
-    std::cout << (start / static_cast<double>CLOCKS_PER_SEC) * 1000.0 << " ms" << std::endl;
-};
-
-// list
-void PmergeMe::lsort(void) {
-
-    std::clock_t start = std::clock();
-
-    // make pair
-    int n = this->_uvector.size() - this->_uvector.size() % 2;
-    for (int i = 0; i < n; i += 2)
-        this->_lpair.push_back(std::make_pair(this->_uvector[i], this->_uvector[i + 1]));
-
-    // sort each pair
-    std::list<std::pair<int, int> >::iterator it = this->_lpair.begin();
-    for (; it != this->_lpair.end(); it++) {
-        if (it->first < it->second)
-            std::swap(it->first, it->second);
+        pend.push_back(it->second);
+        it++;
     }
+    // push last if have to pend
+    if (this->_uvector.size() % 2 == 1)
+        pend.push_back(this->_uvector.back());
 
-    // sort pair vector
-    this->_lpair.sort();
+    // push first pend, no matter what, to the main chain
+    // this->_svector.insert(this->_svector.begin(), pair.begin()->second);
 
-    // move the high value to new sorted vector
-    it = this->_lpair.begin();
-    for (; it != this->_lpair.end(); it++)
-        this->_slist.push_back(it->first);
+    std::vector<int>::iterator sit = this->_svector.begin();
+    std::vector<int>::iterator site = this->_svector.end();
+    for (; sit != site; sit++)
+        std::cout << *sit << " ";
 
-    // insert the low value into sorted vector
-    it = this->_lpair.begin();
-    for (; it != this->_lpair.end(); it++)
-        this->_slist.insert(std::upper_bound(this->_slist.begin(), this->_slist.end(), it->second), it->second);
-
-
-    // if odd left, insert now
-    int size = this->_uvector.size();
-    if (size % 2 == 1)
-        this->_slist.insert(std::upper_bound(this->_slist.begin(), this->_slist.end(), this->_uvector[size - 1]), this->_uvector[size - 1]);
-
-    start = std::clock() - start;
-
-    std::cout << "Time to process a range of " << size << " elements with std::list   : ";
-    std::cout << (start / static_cast<double>CLOCKS_PER_SEC) * 1000.0 << " ms" << std::endl;
-
-    // test print
-    // std::list<int>::iterator lit = this->_slist.begin();
-    // std::cout << "After: ";
-    // for (; lit != this->_slist.end(); lit++)
-    //     std::cout << *lit << " ";
-    // std::cout << std::endl;
+    // insert the pend to the main chain by Jacobsthol index
+    int i = 0;
+    double jIndex = getJacobstholIndex(i);
+    if (jIndex > pair.size() - 1)
+        jIndex = pair.size() - 1;
+    
 };
+
+// test function
+void PmergeMe::readData(int n) {
+    if (n == 0) {
+        std::vector<int>::iterator it = this->_uvector.begin();
+        std::vector<int>::iterator ite = this->_uvector.end();
+        for (; it != ite; it++)
+            std::cout << *it << " ";
+    } else if (n == 1) {
+        std::list<int>::iterator it = this->_ulist.begin();
+        std::list<int>::iterator ite = this->_ulist.end();
+        for (; it != ite; it++)
+            std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+};
+
