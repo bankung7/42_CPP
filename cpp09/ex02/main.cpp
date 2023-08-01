@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 
         // display
         pm.sortVector();
-        pm.sortList();
+        pm.sortDeque();
     }
     catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

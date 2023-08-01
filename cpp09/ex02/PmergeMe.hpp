@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <limits>
 #include <vector>
-#include <list>
+#include <deque>
 #include <iomanip>
 
 class PmergeMe {
@@ -15,9 +15,9 @@ private:
     std::vector<int> _uvector;
     std::vector<int> _svector;
     std::vector<std::pair<int, int> > _vpair;
-    std::list<int> _ulist;
-    std::list<int> _slist;
-    std::list<std::pair<int, int> > _lpair;
+    std::deque<int> _udeque;
+    std::deque<int> _sdeque;
+    std::deque<std::pair<int, int> > _dpair;
 
 public:
     PmergeMe(void);
@@ -39,10 +39,11 @@ public:
     
     // vector
     void sortVector(void);
-    int insertNumber(int pos, int number);
+    template <typename T>
+    int insertNumber(T &cont, int pos, int number);
 
-    // list
-    void sortList(void);
+    // deque
+    void sortDeque(void);
 
 };
 
