@@ -7,13 +7,15 @@
 #include <limits>
 #include <vector>
 #include <list>
+#include <iomanip>
 
 class PmergeMe {
 
 private:
     std::vector<int> _uvector;
     std::vector<int> _svector;
-    std::list<int> _ulist;
+    std::vector<std::pair<int, int> > _vpair;
+    std::vector<int>::iterator _svit;
 
 public:
     PmergeMe(void);
@@ -24,12 +26,15 @@ public:
     void addNumber(std::string input);
     double getJacobstholIndex(int n);
 
+
     // vector
     void sortVector(void);
-
+    void mergeSort(int begin, int end);
+    void merge(int left, int mid, int right);
+    int insertNumber(int pos, int number);
 
     // test function
-    void readData(int n);
+    void readVector(int n);
 
 };
 

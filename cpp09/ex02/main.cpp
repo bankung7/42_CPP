@@ -14,8 +14,10 @@ int main(int argc, char **argv) {
         for (int i = 1; i < argc; i++)
             pm.addNumber(argv[i]);
 
+        // show begin input
+        pm.readVector(0);
+
         // display
-        pm.readData(0);
         pm.sortVector();
     }
     catch (std::exception &e) {
