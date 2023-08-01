@@ -15,7 +15,9 @@ private:
     std::vector<int> _uvector;
     std::vector<int> _svector;
     std::vector<std::pair<int, int> > _vpair;
-    std::vector<int>::iterator _svit;
+    std::list<int> _ulist;
+    std::list<int> _slist;
+    std::list<std::pair<int, int> > _lpair;
 
 public:
     PmergeMe(void);
@@ -25,16 +27,22 @@ public:
 
     void addNumber(std::string input);
     double getJacobstholIndex(int n);
+    
+    template <typename T>
+    void mergeSort(T &cont, int begin, int end);
 
+    template <typename T>
+    void merge(T &pair, int left, int mid, int right);
 
+    template <typename T>
+    void readCont(T cont, std::string text);
+    
     // vector
     void sortVector(void);
-    void mergeSort(int begin, int end);
-    void merge(int left, int mid, int right);
     int insertNumber(int pos, int number);
 
-    // test function
-    void readVector(int n);
+    // list
+    void sortList(void);
 
 };
 

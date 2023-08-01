@@ -14,11 +14,9 @@ int main(int argc, char **argv) {
         for (int i = 1; i < argc; i++)
             pm.addNumber(argv[i]);
 
-        // show begin input
-        pm.readVector(0);
-
         // display
         pm.sortVector();
+        pm.sortList();
     }
     catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

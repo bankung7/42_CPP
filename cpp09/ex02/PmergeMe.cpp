@@ -42,6 +42,77 @@ double PmergeMe::getJacobstholIndex(int n) {
     return (getJacobstholIndex(n - 1) + (2 * getJacobstholIndex(n - 2)));
 }
 
+template <typename T>
+void PmergeMe::mergeSort(T &cont, int begin, int end) {
+    if (begin >= end)
+        return ;
+    int mid = begin + (end - begin) / 2;
+    mergeSort(cont, begin, mid);
+    mergeSort(cont, mid + 1, end);
+    merge(cont, begin, mid, end);
+}
+
+template <typename T>
+void PmergeMe::merge(T &pair, int left, int mid, int right) {
+    int subOne = mid - left + 1;
+    int subTwo = right - mid;
+
+    // create container
+    T vone;
+    T vtwo;
+
+    vone.insert(vone.begin(), pair.begin() + left, pair.begin() + left + subOne + 1);
+    vtwo.insert(vtwo.begin(), pair.begin() + mid + 1, pair.begin() + mid + subOne + 2);
+
+    int indexOne = 0;
+    int indexTwo = 0;
+    int indexMerge = left;
+    while (indexOne < subOne && indexTwo < subTwo) {
+        // std::cout << "Compare " << (vone.begin() + indexOne)->first << " with " << (vtwo.begin() + indexTwo)->first << std::endl;
+        if ((vone.begin() + indexOne)->first <= (vtwo.begin() + indexTwo)->first) {
+            pair[indexMerge] = vone[indexOne];
+            indexOne++;
+        }
+        else {
+            pair[indexMerge] = vtwo[indexTwo];
+            indexTwo++;
+        }
+        // std::cout << "So it would be " << (this->_vpair.begin() + indexMerge)->first << std::endl;
+        indexMerge++;
+    }
+
+    while (indexOne < subOne) {
+        pair[indexMerge] = vone[indexOne];
+        indexOne++;
+        indexMerge++;
+    }
+
+    while (indexTwo < subTwo) {
+        pair[indexMerge] = vtwo[indexTwo];
+        indexTwo++;
+        indexMerge++;
+    }
+
+    // std::vector<std::pair<int, int> >::iterator it = this->_vpair.begin();
+    // for (int i = left; i <= right; i++) {
+    //     std::cout << (it + i)->first << std::endl;
+    // }
+    // std::cout << "============================" << std::endl;
+};
+
+template <typename T>
+void PmergeMe::readCont(T cont, std::string text) {
+    typename T::iterator it = cont.begin();
+    typename T::iterator eit = cont.end();
+
+    std::cout << text;
+    for (; it != eit; it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
+// Vector Section
 int PmergeMe::insertNumber(int pos, int number) {
     std::vector<int>::iterator it = this->_svector.begin();
 
@@ -77,6 +148,8 @@ int PmergeMe::insertNumber(int pos, int number) {
 
 void PmergeMe::sortVector(void) {
 
+    readCont(this->_uvector, "Before : ");
+
     // set time
     std::clock_t start = std::clock();
 
@@ -84,7 +157,7 @@ void PmergeMe::sortVector(void) {
     if (this->_uvector.size() <= 3) {
         this->_svector.insert(this->_svector.begin(), this->_uvector.begin(), this->_uvector.end());
         std::sort(this->_svector.begin(), this->_svector.end());
-        readVector(1);
+        readCont(this->_svector, "After :  ");
         return ;
     }
 
@@ -108,7 +181,7 @@ void PmergeMe::sortVector(void) {
     }
 
     // recursive sort by merge sort each pair to be in sequence, ascending order
-    mergeSort(0, this->_vpair.size() - 1);
+    mergeSort(this->_vpair, 0, this->_vpair.size() - 1);
 
     // insert the sort high value from each pair into sorted container
     pit = this->_vpair.begin();
@@ -143,7 +216,7 @@ void PmergeMe::sortVector(void) {
     if (this->_uvector.size() % 2 == 1)
         insertNumber(cpos, this->_uvector.back());
 
-    readVector(1);
+    readCont(this->_svector, "After :  ");
 
     // time
     start = std::clock() - start;
@@ -152,84 +225,83 @@ void PmergeMe::sortVector(void) {
     std::cout << " elements with std::vector : " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
 };
 
-void PmergeMe::mergeSort(int begin, int end) {
-    if (begin >= end)
+// List section
+void PmergeMe::sortList(void) {
+
+    // add member to the list
+    this->_ulist.insert(this->_ulist.begin(), this->_uvector.begin(), this->_uvector.end());
+
+    // start the clock
+    std::clock_t start = std::clock();
+
+    // if the element is less than 3
+    if (this->_ulist.size() <= 3) {
+        this->_slist.insert(this->_slist.begin(), this->_ulist.begin(), this->_ulist.end());
+        this->_slist.sort();
+        readCont(this->_slist, "After :  ");
         return ;
-    int mid = begin + (end - begin) / 2;
-    mergeSort(begin, mid);
-    mergeSort(mid + 1, end);
-    merge(begin, mid, end);
-}
+    }
 
-void PmergeMe::merge(int left, int mid, int right) {
-    int subOne = mid - left + 1;
-    int subTwo = right - mid;
+    // group the element to pair, if odd let the last unpair.
+    std::vector<int>::iterator it = this->_uvector.begin();
+    while (it != this->_uvector.end()) {
+        int n = *it;
+        if (++it == this->_uvector.end())
+            break ;
+        this->_vpair.push_back(std::make_pair<int, int>(n, *it));
+        it++;
+    }
 
-    // create container
-    std::vector<std::pair<int, int> > vone;
-    std::vector<std::pair<int, int> > vtwo;
+    // compare each pair to determine large of thos elements
+    std::vector<std::pair<int, int> >::iterator pit = this->_vpair.begin();
+    pit = this->_vpair.begin();
+    while (pit != this->_vpair.end()) {
+        if (pit->first < pit->second)
+            std::swap(pit->first, pit->second);
+        pit++;
+    }
 
-    // for (int i = 0; i < subOne; i++) {
-    //     vone.push_back(this->_vpair[left + i]);
-    // }
-    vone.insert(vone.begin(), this->_vpair.begin() + left, this->_vpair.begin() + left + subOne + 1);
-    // for (int i = 0; i < subTwo; i++) {
-    //     vtwo.push_back(this->_vpair[mid + 1 + i]);
-    // }
-    vtwo.insert(vtwo.begin(), this->_vpair.begin() + mid + 1, this->_vpair.begin() + mid + subOne + 2);
+    // recursive sort by merge sort each pair to be in sequence, ascending order
+    mergeSort(this->_vpair, 0, this->_vpair.size() - 1);
 
-    int indexOne = 0;
-    int indexTwo = 0;
-    int indexMerge = left;
-    while (indexOne < subOne && indexTwo < subTwo) {
-        // std::cout << "Compare " << (vone.begin() + indexOne)->first << " with " << (vtwo.begin() + indexTwo)->first << std::endl;
-        if ((vone.begin() + indexOne)->first <= (vtwo.begin() + indexTwo)->first) {
-            this->_vpair[indexMerge] = vone[indexOne];
-            indexOne++;
+    // insert the sort high value from each pair into sorted container
+    pit = this->_vpair.begin();
+    for (; pit != this->_vpair.end(); pit++)
+        this->_svector.push_back(pit->first);
+
+    // add first and second to the sorted one
+    int cpos = 0;
+    this->_svector.insert(this->_svector.begin(), this->_vpair.begin()->second);
+    cpos = insertNumber(cpos, (this->_vpair.begin() + 1)->second);
+
+    // insert the rest using jacobthal sequence as index
+    int remaining = this->_vpair.size() - 2;
+    double current = 3;
+    double jNumber = 0;
+    double before = 0;
+    while (remaining > 0) {
+        jNumber = getJacobstholIndex(current);
+        if (jNumber > this->_vpair.size() - 1)
+            jNumber = this->_vpair.size() - 1;
+        double now = jNumber;
+        while (jNumber > before + 1 && remaining > 0) {
+            cpos = insertNumber(cpos, (this->_vpair.begin() + jNumber)->second);
+            jNumber--;
+            remaining--;
         }
-        else {
-            this->_vpair[indexMerge] = vtwo[indexTwo];
-            indexTwo++;
-        }
-        // std::cout << "So it would be " << (this->_vpair.begin() + indexMerge)->first << std::endl;
-        indexMerge++;
+        current++;
+        before = now - 1;
     }
 
-    while (indexOne < subOne) {
-        this->_vpair[indexMerge] = vone[indexOne];
-        indexOne++;
-        indexMerge++;
-    }
+    // if the size is odd, add the last one
+    if (this->_uvector.size() % 2 == 1)
+        insertNumber(cpos, this->_uvector.back());
 
-    while (indexTwo < subTwo) {
-        this->_vpair[indexMerge] = vtwo[indexTwo];
-        indexTwo++;
-        indexMerge++;
-    }
+    readCont(this->_slist, "After :  ");
 
-    // std::vector<std::pair<int, int> >::iterator it = this->_vpair.begin();
-    // for (int i = left; i <= right; i++) {
-    //     std::cout << (it + i)->first << std::endl;
-    // }
-    // std::cout << "============================" << std::endl;
+    // time
+    start = std::clock() - start;
+    std::cout << "Time to process a range of " << this->_uvector.size();
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << " elements with std::vector : " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
 };
-
-void PmergeMe::readVector(int n) {
-    std::vector<int>::iterator it;
-    std::vector<int>::iterator eit;
-
-    if (n == 0) {
-        it = this->_uvector.begin();
-        eit = this->_uvector.end();
-        std::cout << "Before: ";
-    } else {
-        it = this->_svector.begin();
-        eit = this->_svector.end();
-        std::cout << "After:  ";
-    }
-
-    for (; it != eit; it++) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-}
