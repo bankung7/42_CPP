@@ -226,67 +226,70 @@ void PmergeMe::sortVector(void) {
     std::cout << " elements with std::vector : " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
 };
 
-// List section
-void PmergeMe::sortDeque(void) {
+// list
+void PmergeMe::sortList(void) {
 
     // add member to the list
-    this->_udeque.insert(this->_udeque.begin(), this->_uvector.begin(), this->_uvector.end());
+    this->_ulist.insert(this->_ulist.begin(), this->_uvector.begin(), this->_uvector.end());
+
+    // readCont(this->_ulist, "Before : ");
 
     // start the clock
     std::clock_t start = std::clock();
 
     // if the element is less than 3
-    if (this->_udeque.size() <= 3) {
-        this->_sdeque.insert(this->_sdeque.begin(), this->_udeque.begin(), this->_udeque.end());
-        std::sort(this->_sdeque.begin(), this->_sdeque.end());
-        readCont(this->_sdeque, "After :  ");
+    if (this->_ulist.size() <= 3) {
+        this->_slist.insert(this->_slist.begin(), this->_ulist.begin(), this->_ulist.end());
+        this->_slist.sort();
+        readCont(this->_slist, "After :  ");
         return ;
     }
 
     // group the element to pair, if odd let the last unpair.
-    std::deque<int>::iterator it = this->_udeque.begin();
-    while (it != this->_udeque.end()) {
+    std::list<int>::iterator it = this->_ulist.begin();
+    while (it != this->_ulist.end()) {
         int n = *it;
-        if (++it == this->_udeque.end())
+        if (++it == this->_ulist.end())
             break ;
-        this->_dpair.push_back(std::make_pair<int, int>(n, *it));
+        this->_lpair.push_back(std::make_pair<int, int>(n, *it));
         it++;
     }
 
     // compare each pair to determine large of thos elements
-    std::deque<std::pair<int, int> >::iterator pit = this->_dpair.begin();
-    pit = this->_dpair.begin();
-    while (pit != this->_dpair.end()) {
+    std::list<std::pair<int, int> >::iterator pit = this->_lpair.begin();
+    pit = this->_lpair.begin();
+    while (pit != this->_lpair.end()) {
         if (pit->first < pit->second)
             std::swap(pit->first, pit->second);
         pit++;
     }
 
-    // recursive sort by merge sort each pair to be in sequence, ascending order
-    mergeSort(this->_dpair, 0, this->_dpair.size() - 1);
+    // // recursive sort by merge sort each pair to be in sequence, ascending order
+    mergeSortList(this->_lpair);
 
     // insert the sort high value from each pair into sorted container
-    pit = this->_dpair.begin();
-    for (; pit != this->_dpair.end(); pit++)
-        this->_sdeque.push_back(pit->first);
+    pit = this->_lpair.begin();
+    for (; pit != this->_lpair.end(); pit++)
+        this->_slist.push_back(pit->first);
 
     // add first and second to the sorted one
-    int cpos = 0;
-    this->_sdeque.insert(this->_sdeque.begin(), this->_dpair.begin()->second);
-    cpos = insertNumber(this->_sdeque, cpos, (this->_dpair.begin() + 1)->second);
+    pit = this->_lpair.begin();
+    this->_slist.insert(this->_slist.begin(), (pit++)->second);
+    it = this->_slist.begin();
+    insertList(this->_slist, it, pit->second);
 
-    // insert the rest using jacobthal sequence as index
-    int remaining = this->_dpair.size() - 2;
+    // // insert the rest using jacobthal sequence as index
+    int remaining = this->_lpair.size() - 2;
     double current = 3;
     double jNumber = 0;
     double before = 0;
     while (remaining > 0) {
         jNumber = getJacobstholIndex(current);
-        if (jNumber > this->_dpair.size() - 1)
-            jNumber = this->_dpair.size() - 1;
+        if (jNumber > this->_lpair.size() - 1)
+            jNumber = this->_lpair.size() - 1;
         double now = jNumber;
         while (jNumber > before + 1 && remaining > 0) {
-            cpos = insertNumber(this->_sdeque, cpos, (this->_dpair.begin() + jNumber)->second);
+            insertList(this->_slist, it, getListValue(this->_lpair, jNumber));
             jNumber--;
             remaining--;
         }
@@ -295,14 +298,86 @@ void PmergeMe::sortDeque(void) {
     }
 
     // if the size is odd, add the last one
-    if (this->_udeque.size() % 2 == 1)
-        insertNumber(this->_sdeque, cpos, this->_udeque.back());
+    if (this->_ulist.size() % 2 == 1)
+        insertList(this->_slist, it, this->_ulist.back());
 
-    // readCont(this->_sdeque, "After :  ");
+    // readCont(this->_slist, "After :  ");
 
     // time
     start = std::clock() - start;
-    std::cout << "Time to process a range of " << this->_udeque.size();
+    std::cout << "Time to process a range of " << this->_ulist.size();
     std::cout << std::fixed << std::setprecision(6);
-    std::cout << " elements with std::deque :  " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
+    std::cout << " elements with std::list :  " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
+};
+
+int PmergeMe::getListValue(std::list<std::pair<int, int> > list, double pos) {
+    std::list<std::pair<int, int> >::iterator it = list.begin();
+    while (pos-- > 0)
+        it++;
+    return (it->second);
+};
+
+void PmergeMe::mergeSortList(std::list<std::pair<int, int> > &list) {
+    if (list.size() <= 1)
+        return ;
+
+    int mid = list.size() / 2;
+
+    std::list<std::pair<int, int> > a;
+    std::list<std::pair<int, int> > b;
+    std::list<std::pair<int, int> >::iterator block = list.begin();
+    
+    int i = 0;
+    while (i++ < mid) {
+        block++;
+    }
+    a.insert(a.begin(), list.begin(), block);
+    b.insert(b.begin(), block, list.end());
+
+    mergeSortList(a);
+    mergeSortList(b);
+
+    a.merge(b);
+    list.clear();
+    list.insert(list.begin(), a.begin(), a.end());
+
+}
+
+template <typename T, typename I>
+void PmergeMe::insertList(T &cont, I &it, int number) {
+
+    while (1) {
+        if (number <= cont.front()) {
+            cont.push_front(number);
+            it = cont.begin();
+            return ;
+        }
+        if (number >= cont.back()) {
+            cont.push_back(number);
+            it = cont.end();
+            return ;
+        }
+        // case equal
+        if (number == *it) {
+            cont.insert(it, number);
+            return ;
+        }
+        // case less than
+        if (number < *it) 
+            it--;
+        // case more than
+        else if (number > *it) {
+            if (++it == cont.end()) {
+                cont.push_back(number);
+                it = cont.end();
+                return ;
+            }
+            --it;
+            if (number < *(++it)) {
+                cont.insert(it--, number);
+                return ;
+            }
+        }
+    }
+    return ;
 };
