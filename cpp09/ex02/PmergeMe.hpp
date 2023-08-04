@@ -30,26 +30,21 @@ public:
 
     void addNumber(std::string input);
     double getJacobstholIndex(int n);
-    
-    template <typename T>
-    void mergeSort(T &cont, int begin, int end);
-
-    template <typename T>
-    void merge(T &pair, int left, int mid, int right);
+    void announceTime(std::clock_t start, std::string type);
 
     template <typename T>
     void readCont(T cont, std::string text);
     
     // vector
     void sortVector(void);
-    template <typename T>
-    int insertNumber(T &cont, int pos, int number);
+    void mergeSort(std::vector<std::pair<int, int> > &cont, int begin, int end);
+    void merge(std::vector<std::pair<int, int> > &pair, int left, int mid, int right);
+    int insertNumber(std::vector<int> &cont, int pos, int number);
 
     // list
     void sortList(void);
     void mergeSortList(std::list<std::pair<int, int> > &list);
-    template <typename T, typename I>
-    void insertList(T &cont, I &it, int number);
+    void insertList(std::list<int> &cont, std::list<int>::iterator &it, int number);
     int getListValue(std::list<std::pair<int, int> > list, double pos);
 
 };
