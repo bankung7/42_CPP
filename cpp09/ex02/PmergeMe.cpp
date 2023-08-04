@@ -146,6 +146,9 @@ int PmergeMe::insertNumber(std::vector<int> &cont, int pos, int number) {
 
 void PmergeMe::sortVector(void) {
 
+    if (this->_uvector.size() == 0)
+        throw std::runtime_error("Error : Empty thing to sort");
+
     readCont(this->_uvector, "Before : ");
 
     // set time
