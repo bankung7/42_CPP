@@ -5,7 +5,12 @@ PmergeMe::PmergeMe(void) {
 };
 
 PmergeMe::PmergeMe(const PmergeMe &c) {
-    (void)c;
+    this->_uvector = c._uvector;
+    this->_svector = c._svector;
+    this->_vpair = c._vpair;
+    this->_ulist = c._ulist;
+    this->_slist = c._slist;
+    this->_lpair = c._lpair;
 };
 
 PmergeMe PmergeMe::operator=(const PmergeMe &c) {
