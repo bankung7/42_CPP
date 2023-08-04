@@ -10,7 +10,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <limits>
-#include <iomanip> // for std::put_time
+#include <iomanip>
 
 class BitcoinExchange {
 
@@ -33,6 +33,5 @@ public:
 };
 
 #endif
-
 
 // map is a sorted associative container that contains key-value pairs with unique keys.

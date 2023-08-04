@@ -60,13 +60,19 @@ void BitcoinExchange::makeDB(std::string filename) {
             std::cout << "[WARNING] : number over max value >> " << valueInput << std::endl;
             continue ;
         }
-        // std::cout << ctime(&fdate) << " = " << value << std::endl;
+        
+        // std::cout << ctime(&this->_db.begin()->first) << " = " << value << std::endl;
 
         // insert into db
         this->_db.insert(std::pair<time_t, double>(fdate, value));
     }
+
     dbFile.close();
-    std::cout << std::endl;
+
+    if (this->_db.size() == 0)
+        throw std::runtime_error("Error : datatbase is empty");
+
+    std::cout << "==================================" << std::endl;
 };
 
 void BitcoinExchange::readInput(std::string input) {
@@ -108,29 +114,35 @@ void BitcoinExchange::readInput(std::string input) {
             std::cout << "Error : not a positive number." << std::endl;
             continue ;
         }
+
         if (vvalue > 1000) {
             std::cout << "Error : too large a number." << std::endl;
             continue ;
         }
 
+        std::map<time_t, double>::iterator it = this->_db.begin();
+
+        if ((++it)->first > vdate) {
+            std::cout << "Error : input date is before date in database => " << idate << std::endl;
+            continue ;
+        }
+
         double price;
-        std::map<time_t, double>::iterator it;
         it = this->_db.lower_bound(vdate);
+
         if (it->first == vdate)
             price = it->second;
-        else {
-            if (it == this->_db.begin()) {
-                std::cout << "Error : bad input" << std::endl;
-                continue ;
-            }
+        else 
             price = (--it)->second;
-        }
+
         price *= vvalue;
+
         if (price > std::numeric_limits<double>::max()) {
             std::cout << "Error : exceed max value." << std::endl;
             continue ;
         }
-        std::cout << idate << "  "  << (price) << std::endl;
+        // std::cout << std::fixed << std::setprecision(3);
+        std::cout << idate << " => " << vvalue << " = "  << price << std::endl;
     }
 
     ifile.close();
@@ -177,6 +189,8 @@ double BitcoinExchange::convertValue(std::string &input) {
     double value;
     svalue << input;
     svalue >> value;
+    if (svalue.good() == 1 || svalue.fail() == 1)
+        return (-1);
     return (value);
 };
 

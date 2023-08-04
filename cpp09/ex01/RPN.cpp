@@ -70,8 +70,11 @@ void RPN::operations(char c)
         this->_stack.top() -= v1;
     else if (c == '*')
         this->_stack.top() *= v1;
-    else if (c == '/')
+    else if (c == '/') {
+        if (v1 == 0)
+            throw std::runtime_error("Error : Div by 0");
         this->_stack.top() /= v1;
+    }
     // std::cout << "=== > " << this->_stack.top() << std::endl;
 }
 
