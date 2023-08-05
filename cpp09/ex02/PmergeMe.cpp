@@ -28,14 +28,13 @@ void PmergeMe::addNumber(std::string input) {
     ss << input;
     double n;
     ss >> n;
-    if (ss.good() == 1 || ss.fail() == 1) {
-        std::cout << "[WARNING] : not a number => " << input << std::endl;
-        return ;
-    }
-    if (n < 0 || n > std::numeric_limits<int>::max()) {
-        std::cout << "[WARNING] : out of range [0 - max int]=> " << input << std::endl;
-        return ;
-    }
+
+    if (ss.good() == 1 || ss.fail() == 1)
+        throw std::runtime_error("Error : some input is not a number");
+
+    if (n < 0 || n > std::numeric_limits<int>::max())
+        throw std::runtime_error("Error : number should be [0 - Max int]");
+
     this->_uvector.push_back(n);
 }
 
