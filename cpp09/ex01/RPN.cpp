@@ -7,7 +7,8 @@ RPN::RPN(void)
 RPN::RPN(std::string str)
 {
     if (str.size() < 3)
-        throw OperationError();
+        throw std::runtime_error("Operations Error");
+
     std::string::iterator it = str.begin();
     std::string ops = "+-/*";
     for (; it != str.end(); it++)
@@ -27,9 +28,11 @@ RPN::RPN(std::string str)
             input(*it);
             continue ;
         }
-        throw OperationError();
+        throw std::runtime_error("Operations Error");
         return ;
     }
+    if (this->_stack.size() != 1)
+        throw std::runtime_error("Error");
     std::cout << this->_stack.top() << std::endl;
 }
 
@@ -61,7 +64,7 @@ void RPN::input(char c)
 void RPN::operations(char c)
 {
     if (this->_stack.size() < 2)
-        throw OperationError();
+        throw std::runtime_error("Error");
     int v1 = this->_stack.top();
     this->_stack.pop();
     if (c == '+')
@@ -76,11 +79,6 @@ void RPN::operations(char c)
         this->_stack.top() /= v1;
     }
     // std::cout << "=== > " << this->_stack.top() << std::endl;
-}
-
-const char* RPN::OperationError::what(void) const throw()
-{
-    return ("Error");
 }
 
 // find the way to throw error

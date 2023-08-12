@@ -22,10 +22,6 @@ public:
     void input(char c);
     void operations(char c);
 
-    class OperationError : public std::exception {
-        const char* what(void) const throw();
-    };
-
 };
 
 #endif

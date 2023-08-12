@@ -63,7 +63,7 @@ void PmergeMe::announceTime(std::clock_t start, std::string type) {
     start = std::clock() - start;
     std::cout << "Time to process a range of " << this->_uvector.size();
     std::cout << std::fixed << std::setprecision(6);
-    std::cout << " elements with std::" << type << " : " << (start / (CLOCKS_PER_SEC * 1.0)) << " us" << std::endl;
+    std::cout << " elements with std::" << type << " : " << (start / (CLOCKS_PER_SEC * 1.0)) << " s" << std::endl;
 
 }
 
